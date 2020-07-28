@@ -4,9 +4,16 @@ using UnityEngine;
 
 public abstract class PlatformGenerator : MonoBehaviour
 {
+	public Player player;
 	public GameObject PlatformPrefab;
 	public HashSet<Platform> platforms;
-	Color[] colors;
+
+	[HideInInspector]
+	public Color[] colors;
+
+	public float alphaNotSelected = 0.1f;
+	public float alphaSelected = 1f;
+
 	public bool isDrawingScreenBorder = false;
 	public bool isDrawingPlatformRect = false;
 
@@ -14,11 +21,14 @@ public abstract class PlatformGenerator : MonoBehaviour
 	public float CameraHeight, CameraWidth;
 
 	[HideInInspector]
-	public Vector3 RightOfScreen { get { return Camera.main.transform.position + new Vector3(CameraWidth / 2 + screenOffest, 0, 0); } }
+	public Vector3 RightOfScreen { get { return Camera.main.transform.position + new Vector3(CameraWidth / 2 + HorizontalOffest, 0, 0); } }
 	[HideInInspector]
-	public Vector3 LeftOfScreen { get { return Camera.main.transform.position - new Vector3(CameraWidth / 2 + screenOffest, 0, 0); } }
+	public Vector3 LeftOfScreen { get { return Camera.main.transform.position - new Vector3(CameraWidth / 2 + HorizontalOffest, 0, 0); } }
+	public Vector3 TopOfScreen { get { return Camera.main.transform.position + new Vector3(0, CameraHeight / 2 + VerticalOffset, 0); } }
+	public Vector3 BottomOfScreen { get { return Camera.main.transform.position - new Vector3(0, CameraHeight / 2 + VerticalOffset, 0); } }
 
-	public float screenOffest = 10f;
+	public float HorizontalOffest = 1f;
+	public float VerticalOffset = 2;
 
 	public float blockWidth = 4;
 	public float blockHeight = 1.33f;
@@ -73,20 +83,40 @@ public abstract class PlatformGenerator : MonoBehaviour
 			for (int i = 0; i < plats.Length; ++i) if (plats[i] != null) plats[i].Die();
 		}
 		platforms = new HashSet<Platform>();
+
+
+		CreateInitialPlatform();
 	}
 	public void restartGeneration() => startGeneration();
 	public void stopGenerating() => generating = false;
 
-	protected void CreatePlatform(Vector3 topLeft) {
-		Vector3 pos = new Vector3(topLeft.x + blockWidth / 2, topLeft.y - blockHeight / 2);
+	void CreatePlatform(Vector3 pos, float width, bool initial, int ColorIndex) {
 		GameObject plat = Instantiate(PlatformPrefab, pos, Quaternion.identity);
 		Platform platform = plat.GetComponent<Platform>();
 		platform.platformGenerator = this;
-		platform.setSpeedX(platformSpeed);
+		platform.player = player;
 		platform.isDrawingBoundingBox = isDrawingPlatformRect;
+		platform.isInitial = initial;
+		platform.Width = width;
+		platform.Height = blockHeight;
+		platform.setSpeed(platformSpeed);
+		platform.changeColor(ColorIndex);
+	}
+	protected void CreatePlatform(Vector3 topLeft) {
+		CreatePlatform(new Vector3(topLeft.x + blockWidth / 2, topLeft.y - blockHeight / 2), blockWidth, false, randomColorIndex());
+	}
+	void CreateInitialPlatform() {
+		int colIndex = randomColorIndex();
+		player.changeColor(colIndex);
+		CreatePlatform(new Vector3(0, -blockHeight / 2), CameraWidth, true, player.ColorIndex);
+	}
+
+	public void updatePlatformColors() {
+		foreach (Platform plat in platforms) if (plat != null) plat.changeColor(plat.ColorIndex);
 	}
 
 	public Color randomColor() => colors[Random.Range(0, colors.Length)];
+	public int randomColorIndex() => Random.Range(0, colors.Length);
 	public Color randomColorRange() => new Color(Random.value, Random.value, Random.value);
 
 	public void registerBlock(Platform platform) => platforms.Add(platform);
@@ -110,6 +140,9 @@ public abstract class PlatformGenerator : MonoBehaviour
 
 		Debug.DrawLine(RightOfScreen + new Vector3(0, CameraHeight / 2, 0), RightOfScreen + new Vector3(0, -CameraHeight / 2, 0), Color.magenta);
 		Debug.DrawLine(LeftOfScreen + new Vector3(0, CameraHeight / 2, 0), LeftOfScreen + new Vector3(0, -CameraHeight / 2, 0), Color.magenta);
+
+		Debug.DrawLine(TopOfScreen + new Vector3(CameraWidth / 2, 0, 0), TopOfScreen + new Vector3(-CameraWidth / 2, 0, 0), Color.magenta);
+		Debug.DrawLine(BottomOfScreen + new Vector3(CameraWidth / 2, 0, 0), BottomOfScreen + new Vector3(-CameraWidth / 2, 0, 0), Color.magenta);
 
 		//print("Camera W: " + CameraWidth + " H: " + CameraHeight);
 		//print("Platform W: " + blockWidth + " H: " + blockHeight);

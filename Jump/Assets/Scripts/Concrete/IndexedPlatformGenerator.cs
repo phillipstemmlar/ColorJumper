@@ -14,7 +14,7 @@ public class IndexedPlatformGenerator : PlatformGenerator
 	protected override void onGenerationInterval() {
 		if (platformIndex < PlatformHeights.Length) {
 			platformIndex++;
-			print("" + platformIndex + ": Generation Interval!");
+			//print("" + platformIndex + ": Generation Interval!");
 			generateNextPlatform();
 		} else {
 			stopGenerating();

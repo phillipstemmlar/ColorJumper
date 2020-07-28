@@ -45,15 +45,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlatformPrefab: {fileID: 6081521917713528921, guid: 34f5b9c64a75f724f9148e6106bf4d81,
     type: 3}
-  isDrawingScreenBorder: 0
+  isDrawingScreenBorder: 1
   isDrawingPlatformRect: 0
   CameraHeight: 10
-  CameraWidth: 23.753845
+  CameraWidth: 23.723078
   screenOffest: 1
   blockWidth: 4
   blockHeight: 1.333
   scaleMultiplier: 100
-  intervalDistance: 0
+  intervalDistance: 5
   platformSpeed: 5
   platformIndex: 0
   PlatformHeights:
