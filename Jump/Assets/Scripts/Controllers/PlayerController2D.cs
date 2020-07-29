@@ -7,7 +7,13 @@ public class PlayerController2D : RaycastController
 	public float maxClimpAngle = 80;
 	public float maxDecendAngle = 75;
 
+	public Player player;
+
 	public CollisionInfo collisions;
+
+	void Awake() {
+		player = GetComponent<Player>();
+	}
 	public override void Start() {
 		base.Start();
 	}
@@ -19,6 +25,9 @@ public class PlayerController2D : RaycastController
 		if (velocity.y < 0) DecendSlope(ref velocity);
 		if (velocity.x != 0) HorizontalCollisions(ref velocity);
 		if (velocity.y != 0) VerticalCollisions(ref velocity);
+
+		HorizontalTriggers(velocity);
+		VerticalTriggers(velocity);
 
 		transform.Translate(velocity);
 
@@ -40,9 +49,7 @@ public class PlayerController2D : RaycastController
 			}
 
 			if (hit) {
-
 				if (hit.distance == 0) continue;
-
 				float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 				if (i == 0 && slopeAngle <= maxClimpAngle) {
 
@@ -71,6 +78,7 @@ public class PlayerController2D : RaycastController
 
 					collisions.left = (directionX == -1);
 					collisions.right = (directionX == 1);
+
 				}
 			}
 		}
@@ -92,8 +100,8 @@ public class PlayerController2D : RaycastController
 			}
 
 			if (hit) {
-				if (hit.collider.tag == "platform" && (directionY == 1 || hit.distance == 0)) continue;
 
+				if (hit.collider.tag == "platform" && (directionY == 1 || hit.distance == 0)) continue;
 
 				velocity.y = (hit.distance - skinWidth) * directionY;
 				rayLength = hit.distance;
@@ -104,6 +112,7 @@ public class PlayerController2D : RaycastController
 
 				collisions.below = (directionY == -1);
 				collisions.above = (directionY == 1);
+
 			}
 		}
 
@@ -144,6 +153,7 @@ public class PlayerController2D : RaycastController
 		RaycastHit2D hit = Physics2D.Raycast(rayOrigin, -Vector2.up, Mathf.Infinity, collisionMask);
 
 		if (hit) {
+
 			float slopeAngle = Vector2.Angle(hit.normal, Vector2.up);
 			if (slopeAngle != 0 && slopeAngle <= maxDecendAngle) {
 				if (Mathf.Sign(hit.normal.x) == directionX) {
@@ -162,6 +172,35 @@ public class PlayerController2D : RaycastController
 		}
 
 
+	}
+
+	void HorizontalTriggers(Vector3 velocity) {
+		float directionX = Mathf.Sign(velocity.x);
+		float rayLength = Mathf.Abs(velocity.x) + skinWidth;
+		for (int i = 0; i < horizontalRayCount; ++i) {
+			Vector2 rayOrigin = (directionX == -1) ? raycastOrigins.bottomLeft : raycastOrigins.bottomRight;
+			rayOrigin += Vector2.up * (horizontalRaySpacing * i);
+			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.right * directionX, rayLength, triggerMask);
+
+			if (hit) onTrigger(hit.collider);
+		}
+	}
+
+	void VerticalTriggers(Vector3 velocity) {
+		float directionY = Mathf.Sign(velocity.y);
+		float rayLength = Mathf.Abs(velocity.y) + skinWidth;
+
+		for (int i = 0; i < verticalRayCount; ++i) {
+			Vector2 rayOrigin = (directionY == -1) ? raycastOrigins.bottomLeft : raycastOrigins.topLeft;
+			rayOrigin += Vector2.right * (verticalRaySpacing * i + velocity.x);
+			RaycastHit2D hit = Physics2D.Raycast(rayOrigin, Vector2.up * directionY, rayLength, collisionMask);
+
+			if (hit) onTrigger(hit.collider);
+		}
+	}
+	void onTrigger(Collider2D other) {
+		if (player == null) player = GetComponent<Player>();
+		player.onTrigger(other);
 	}
 
 	public struct CollisionInfo

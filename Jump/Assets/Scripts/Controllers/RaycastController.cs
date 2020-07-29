@@ -6,6 +6,7 @@ using UnityEngine;
 public class RaycastController : MonoBehaviour
 {
 	public LayerMask collisionMask;
+	public LayerMask triggerMask;
 
 	public const float skinWidth = 0.015f;
 

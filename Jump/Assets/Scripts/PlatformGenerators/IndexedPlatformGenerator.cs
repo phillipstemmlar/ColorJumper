@@ -2,18 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CountPlatformGenerator : PlatformGenerator
+public class IndexedPlatformGenerator : PlatformGenerator
 {
-	public int PlatformCount = 5;
+	public float[] PlatformHeights;
 
-	protected override void Start() {
-		base.Start();
+	protected override void init() {
+		type = Type.indexed;
 		platformIndex = 0;
-
 	}
-
 	protected override void onGenerationInterval() {
-		if (platformIndex < PlatformCount) {
+		if (platformIndex < PlatformHeights.Length) {
 			platformIndex++;
 			//print("" + platformIndex + ": Generation Interval!");
 			generateNextPlatform();
@@ -26,7 +24,14 @@ public class CountPlatformGenerator : PlatformGenerator
 	}
 
 	protected override void generateNextPlatform() {
-		CreatePlatform(new Vector3(transform.position.x, blockHeight - CameraHeight / 2));
+		CreatePlatform(transform.position + Vector3.up * PlatformHeights[platformIndex]);
+	}
+
+	public override void onPlayerOutOfBounds(bool bottom) {
+		print("Before Restarting - indexed");
+		//Vector3 pos = player.transform.position;
+		//pos.y = CameraHeight / 2 + VerticalOffset;
+		//player.transform.position = pos;
 	}
 
 	protected override Color[] createColorsArray() {

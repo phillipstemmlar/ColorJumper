@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Block
   - platform
+  - ColorChanger
   layers:
   - Default
   - TransparentFX
@@ -16,8 +17,8 @@ TagManager:
   - 
   - 
   - Player
+  - Consumables
   - Obstacles
-  - 
   - 
   - 
   - 

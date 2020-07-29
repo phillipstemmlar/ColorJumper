@@ -124,6 +124,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collisionMask:
     serializedVersion: 2
+    m_Bits: 1024
+  triggerMask:
+    serializedVersion: 2
     m_Bits: 512
   horizontalRayCount: 4
   verticalRayCount: 4
@@ -135,6 +138,7 @@ MonoBehaviour:
   collider: {fileID: 0}
   maxClimpAngle: 80
   maxDecendAngle: 75
+  player: {fileID: 0}
 --- !u!114 &7756664992222528795
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -148,8 +152,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 6
-  maxJumpHeight: 6
+  maxJumpHeight: 4
   minJumpHeight: 1
   timeToJumpApex: 0.4
-  ColorIndex: -1
-  platformGenerator: {fileID: 0}
+  pauseMovement: 0
+  ColorIndex: 2
+  hangTime: 0.2

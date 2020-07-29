@@ -3,22 +3,11 @@ using UnityEngine;
 
 public class UnlimitedPlatformGenerator : PlatformGenerator
 {
-	int platformHeights;
-
-	protected override void Start() {
-		base.Start();
-		platformIndex = 0;
-		calculateHeightValues();
-
-		float n = Mathf.Floor(CameraHeight / blockHeight);
-		for (int i = 0; i < n; ++i) {
-			float y = (i + 1) * blockHeight;
-			print("" + i + ": " + y);
-		}
+	protected override void init() {
+		type = Type.unlimited;
 	}
 
 	protected override void onGenerationInterval() {
-		//print("" + platformIndex + ": Generation Interval!");
 		generateNextPlatform();
 	}
 	protected override void onGeneratingFinished() {
@@ -38,11 +27,17 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 		return cols.ToArray();
 	}
 
-	void calculateHeightValues() {
-		platformHeights = Mathf.FloorToInt(CameraHeight / blockHeight) - 2;
+	public override void onPlayerOutOfBounds(bool bottom) {
+		if (bottom) {
+			//player.setY(CameraHeight / 2 + VerticalOffset);
+			//changeBackgroundColor(randomColorIndex());
+			restartGeneration();
+		}
 	}
 
 	float randomHeight() {
-		return (Random.Range(0, platformHeights) % platformHeights) * blockHeight - CameraHeight / 2 + blockHeight;
+		return getHeight(Random.Range(0, platformHeightsCount));
+
 	}
+
 }

@@ -12,13 +12,12 @@ public class Platform : MonoBehaviour
 	public PlatformGenerator platformGenerator;
 	PlatformController platformController;
 	SpriteRenderer spriteRenderer;
-
-	[HideInInspector]
-	public Player player;
+	BoxCollider2D collider;
 
 	[HideInInspector]
 	public int ColorIndex = -1;
 	Color platformColor = Color.white;
+	int previousBackgroundColorIndex = -1;
 
 	public bool isInitial = false;
 	public bool isDrawingBoundingBox = false;
@@ -33,16 +32,18 @@ public class Platform : MonoBehaviour
 	private void Awake() {
 		platformController = GetComponent<PlatformController>();
 		spriteRenderer = GetComponent<SpriteRenderer>();
+		collider = GetComponent<BoxCollider2D>();
 	}
 
 	void Start() {
 		transform.localScale = new Vector3(Width * scaleMultiplier, Height * scaleMultiplier, 1);
 		platformGenerator.registerBlock(this);
-		//setColor(platformGenerator.randomColor());    //TEMP
+		previousBackgroundColorIndex = platformGenerator.BackgroundColorIndex;
 	}
 
 	void Update() {
 		if (isOutOfBounds()) onOutOfBounds();
+		if (checkBackgroundColorChanged()) onBackgroundColorChanged();
 		if (isDrawingBoundingBox) drawBoundingBox();
 	}
 
@@ -51,6 +52,13 @@ public class Platform : MonoBehaviour
 	}
 	protected virtual void onOutOfBounds() {
 		Die();
+	}
+
+	bool checkBackgroundColorChanged() => previousBackgroundColorIndex != platformGenerator.BackgroundColorIndex;
+
+	void onBackgroundColorChanged() {
+		previousBackgroundColorIndex = platformGenerator.BackgroundColorIndex;
+		updateColor();
 	}
 
 	public void changeColor(int colIndex) {
@@ -66,8 +74,13 @@ public class Platform : MonoBehaviour
 		if (ColorIndex < 0) platformColor = Color.white;
 		else platformColor = platformGenerator.colors[ColorIndex];
 
-		if (ColorIndex != -1 && player != null && ColorIndex == player.ColorIndex) platformColor.a = platformGenerator.alphaSelected;
-		else platformColor.a = platformGenerator.alphaNotSelected;
+		if (ColorIndex != -1 && ColorIndex == platformGenerator.BackgroundColorIndex) {
+			platformColor.a = platformGenerator.alphaSelected;
+			collider.enabled = false;
+		} else {
+			platformColor.a = platformGenerator.alphaNotSelected;
+			collider.enabled = true;
+		}
 
 		if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
 		spriteRenderer.color = platformColor;
@@ -83,8 +96,6 @@ public class Platform : MonoBehaviour
 	}
 
 	public void Die() {
-		print("I am Dead now!");
-
 		platformGenerator.unregisterBlock(this);
 		Destroy(gameObject);
 	}

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6081521917713528926}
   - component: {fileID: -5038589698270287836}
   - component: {fileID: 885594173552945911}
-  m_Layer: 9
+  m_Layer: 10
   m_Name: Platform
   m_TagString: platform
   m_Icon: {fileID: 0}
@@ -123,6 +123,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   platformGenerator: {fileID: 0}
+  ColorIndex: -1
+  isInitial: 0
+  isDrawingBoundingBox: 0
+  Width: 4
+  Height: 1.333
 --- !u!114 &885594173552945911
 MonoBehaviour:
   m_ObjectHideFlags: 0
