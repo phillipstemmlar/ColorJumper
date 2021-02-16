@@ -11,8 +11,11 @@ public class Platform : MonoBehaviour
 
 	public PlatformGenerator platformGenerator;
 	PlatformController platformController;
-	SpriteRenderer spriteRenderer;
 	BoxCollider2D collider;
+
+	SpriteRenderer spriteRenderer_Left;
+	SpriteRenderer spriteRenderer_Middel;
+	SpriteRenderer spriteRenderer_Right;
 
 	[HideInInspector]
 	public int ColorIndex = -1;
@@ -21,22 +24,29 @@ public class Platform : MonoBehaviour
 
 	public bool isInitial = false;
 	public bool isDrawingBoundingBox = false;
-
-	public float Width = 4f;
-	public float Height = 1.333f;
+	public float Width = 2f;
+	public float Height = 1f;
 	public float scaleMultiplier {
-		get { return (platformGenerator == null) ? 100f : platformGenerator.scaleMultiplier; }
+		get { return (platformGenerator == null) ? 1f : platformGenerator.scaleMultiplier; }
 		set { if (platformGenerator != null) platformGenerator.scaleMultiplier = value; }
 	}
 
 	private void Awake() {
 		platformController = GetComponent<PlatformController>();
-		spriteRenderer = GetComponent<SpriteRenderer>();
 		collider = GetComponent<BoxCollider2D>();
+
+		SpriteRenderer[] children = GetComponentsInChildren<SpriteRenderer>();
+
+		foreach (SpriteRenderer rend in children) {
+			if (rend.gameObject.tag == "platform_left") spriteRenderer_Left = rend;
+			if (rend.gameObject.tag == "platform_middel") spriteRenderer_Middel = rend;
+			if (rend.gameObject.tag == "platform_right") spriteRenderer_Right = rend;
+		}
+
 	}
 
 	void Start() {
-		transform.localScale = new Vector3(Width * scaleMultiplier, Height * scaleMultiplier, 1);
+		changeSize(Width, Height);
 		platformGenerator.registerBlock(this);
 		previousBackgroundColorIndex = platformGenerator.BackgroundColorIndex;
 	}
@@ -44,6 +54,10 @@ public class Platform : MonoBehaviour
 	void Update() {
 		if (isOutOfBounds()) onOutOfBounds();
 		if (checkBackgroundColorChanged()) onBackgroundColorChanged();
+	}
+
+	private void OnDrawGizmos() {
+		//changeSize(Width, Height);
 		if (isDrawingBoundingBox) drawBoundingBox();
 	}
 
@@ -59,6 +73,22 @@ public class Platform : MonoBehaviour
 	void onBackgroundColorChanged() {
 		previousBackgroundColorIndex = platformGenerator.BackgroundColorIndex;
 		updateColor();
+	}
+
+	public void changeSize(float w, float h) {
+		float width_side = spriteRenderer_Left.bounds.size.x;
+		float h_offset = Width / 2 - width_side / 2;
+
+		spriteRenderer_Middel.transform.localScale = new Vector3(h_offset * scaleMultiplier, Height * scaleMultiplier, 1);
+		spriteRenderer_Right.transform.localScale = new Vector3(width_side * scaleMultiplier, Height * scaleMultiplier);
+		spriteRenderer_Left.transform.localScale = new Vector3(width_side * scaleMultiplier, Height * scaleMultiplier);
+
+		spriteRenderer_Middel.transform.localPosition = new Vector3(0, 0, 0);
+		spriteRenderer_Right.transform.localPosition = new Vector3(h_offset * scaleMultiplier, 0, 0);
+		spriteRenderer_Left.transform.localPosition = new Vector3(-h_offset * scaleMultiplier, 0, 0);
+
+		collider.offset = new Vector2(0, 0);
+		collider.size = new Vector2(Width * scaleMultiplier, Height * scaleMultiplier);
 	}
 
 	public void changeColor(int colIndex) {
@@ -82,8 +112,9 @@ public class Platform : MonoBehaviour
 			collider.enabled = true;
 		}
 
-		if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
-		spriteRenderer.color = platformColor;
+		if (spriteRenderer_Left != null) spriteRenderer_Left.color = platformColor;
+		if (spriteRenderer_Middel != null) spriteRenderer_Middel.color = platformColor;
+		if (spriteRenderer_Right != null) spriteRenderer_Right.color = platformColor;
 	}
 
 	public void setSpeed(float speed) {
@@ -91,12 +122,33 @@ public class Platform : MonoBehaviour
 	}
 
 	void drawBoundingBox() {
-		PlatformGenerator.Rect rect = new PlatformGenerator.Rect(transform.position, Width, Height);
+		Rect rect = new Rect(transform.position, Width, Height);
 		rect.draw(Color.yellow);
 	}
 
 	public void Die() {
 		platformGenerator.unregisterBlock(this);
 		Destroy(gameObject);
+	}
+
+	public struct Rect
+	{
+		public Vector2 middle;
+		public float width, height;
+		public Rect(Vector2 mid, float w, float h) {
+			middle = mid;
+			width = w;
+			height = h;
+		}
+		public Vector2 topLeft { get { return new Vector3(middle.x - width / 2, middle.y + height / 2); } }
+		public Vector2 topRight { get { return new Vector3(middle.x + width / 2, middle.y + height / 2); } }
+		public Vector2 bottomLeft { get { return new Vector3(middle.x - width / 2, middle.y - height / 2); } }
+		public Vector2 bottomRight { get { return new Vector3(middle.x + width / 2, middle.y - height / 2); } }
+		public void draw(Color col) {
+			Debug.DrawLine(topLeft, topRight, col);
+			Debug.DrawLine(topRight, bottomRight, col);
+			Debug.DrawLine(bottomRight, bottomLeft, col);
+			Debug.DrawLine(bottomLeft, topLeft, col);
+		}
 	}
 }

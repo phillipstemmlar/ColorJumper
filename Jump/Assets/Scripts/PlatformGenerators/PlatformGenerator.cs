@@ -172,7 +172,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 	}
 
 	void updateBackgroundColor() {
-		Camera.main.backgroundColor = BackgroundColor;
+		//Camera.main.backgroundColor = BackgroundColor;
 	}
 
 	public void updatePlatformColors() {
