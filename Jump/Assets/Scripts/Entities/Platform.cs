@@ -17,6 +17,8 @@ public class Platform : MonoBehaviour
 	SpriteRenderer spriteRenderer_Middel;
 	SpriteRenderer spriteRenderer_Right;
 
+	ColorChanger colorChanger = null;
+
 	[HideInInspector]
 	public int ColorIndex = -1;
 	Color platformColor = Color.white;
@@ -106,10 +108,10 @@ public class Platform : MonoBehaviour
 
 		if (ColorIndex != -1 && ColorIndex == platformGenerator.BackgroundColorIndex) {
 			platformColor.a = platformGenerator.alphaSelected;
-			collider.enabled = false;
+			Disable();
 		} else {
 			platformColor.a = platformGenerator.alphaNotSelected;
-			collider.enabled = true;
+			Enable();
 		}
 
 		if (spriteRenderer_Left != null) spriteRenderer_Left.color = platformColor;
@@ -121,9 +123,31 @@ public class Platform : MonoBehaviour
 		platformController.move = new Vector3(-speed, platformController.move.y, 0);
 	}
 
+	public void setColorChanger(ColorChanger colChanger) {
+		colorChanger = colChanger;
+		colorChanger.transform.parent = transform;
+		colorChanger.transform.SetAsFirstSibling();
+	}
+
 	void drawBoundingBox() {
 		Rect rect = new Rect(transform.position, Width, Height);
 		rect.draw(Color.yellow);
+	}
+
+	public void Enable() {
+		collider.enabled = true;
+		spriteRenderer_Left.enabled = true;
+		spriteRenderer_Middel.enabled = true;
+		spriteRenderer_Right.enabled = true;
+	}
+
+	public void Disable() {
+		if (colorChanger != null) colorChanger.Die();
+		colorChanger = null;
+		collider.enabled = false;
+		spriteRenderer_Left.enabled = false;
+		spriteRenderer_Middel.enabled = false;
+		spriteRenderer_Right.enabled = false;
 	}
 
 	public void Die() {

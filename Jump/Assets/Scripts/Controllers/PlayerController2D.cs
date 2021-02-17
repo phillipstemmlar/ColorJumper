@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
 
-// ?
-
 public class PlayerController2D : RaycastController
 {
 	public float maxClimpAngle = 80;

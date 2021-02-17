@@ -22,15 +22,18 @@ public class Player : MonoBehaviour
 
 	public bool pauseMovement = false;
 
-	[HideInInspector]
-	public int ColorIndex = -1;
+	[HideInInspector] public int ColorIndex = -1;
 	Color playerColor = Color.white;
 
 	PlatformGenerator platformGenerator = null;
 	SpriteRenderer spriteRenderer;
 
+	[HideInInspector] public GameManager manager;
+
 	Vector3 velocity;
 	PlayerController2D controller;
+	[HideInInspector]
+	public ScoreManager.Score score;
 
 	public float hangTime = 0.2f;
 	float hangCounter;
@@ -60,7 +63,7 @@ public class Player : MonoBehaviour
 		if (controller.collisions.below) hangCounter = hangTime;
 		else hangCounter -= Time.deltaTime;
 
-		//if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below) velocity.y = maxJumpVelocity;
+		if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below) velocity.y = maxJumpVelocity;
 		if (Input.GetKeyDown(KeyCode.Space) && hangCounter > 0) {
 			hangCounter = -1f;
 			velocity.y = maxJumpVelocity;
@@ -87,10 +90,12 @@ public class Player : MonoBehaviour
 	}
 
 	bool isOutOfBoundsBottom() => (transform.position.y < -(platformGenerator.CameraHeight / 2 + verticalOffset));
-	bool isOutOfBoundsTop() => (transform.position.y > platformGenerator.CameraHeight / 2 + verticalOffset);
+	bool isOutOfBoundsTop() => false && (transform.position.y > platformGenerator.CameraHeight / 2 + verticalOffset);
 
 
-	void onOutOfBounds(bool bottom) => platformGenerator.onPlayerOutOfBounds(bottom);
+	void onOutOfBounds(bool bottom) {
+		manager.PlayerDied(bottom);
+	}
 
 	public void setX(float x) {
 		Vector3 pos = transform.position;
@@ -131,6 +136,7 @@ public class Player : MonoBehaviour
 			colorChanger.setPlatformGenerator(platformGenerator);
 			colorChanger.change();
 			colorChanger.trigger();
+			score.change();
 		}
 	}
 

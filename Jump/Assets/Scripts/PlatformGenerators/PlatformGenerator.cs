@@ -9,6 +9,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 	public Vector2 PlayerPosition = new Vector2(-7f, 3f);
 
 	public GameObject PlatformPrefab;
+	public GameObject ColorChangerPrefab;
 	public HashSet<Platform> platforms;
 
 	[HideInInspector]
@@ -29,6 +30,9 @@ public abstract class PlatformGenerator : MonoBehaviour
 	public Vector3 LeftOfScreen { get { return Camera.main.transform.position - new Vector3(CameraWidth / 2 + HorizontalOffest, 0, 0); } }
 	public Vector3 TopOfScreen { get { return Camera.main.transform.position + new Vector3(0, CameraHeight / 2 + VerticalOffset, 0); } }
 	public Vector3 BottomOfScreen { get { return Camera.main.transform.position - new Vector3(0, CameraHeight / 2 + VerticalOffset, 0); } }
+
+	public float ColorChangerChance = 0.1f;
+	public float ColorChangerOffset = -1f;
 
 	public float HorizontalOffest = 1f;
 	public float VerticalOffset = 2;
@@ -101,13 +105,14 @@ public abstract class PlatformGenerator : MonoBehaviour
 		player.Reset();
 	}
 
-	public void startGeneration() {
+	public void startGeneration(int colInd = -1) {
 		configurePlayer();
 		generating = true;
 		finishedGenerating = false;
 		time = generationInterval;
 		platformIndex = 0;
-		changeBackgroundColor(randomColorIndex());
+		if (colInd == -1) changeBackgroundColor(randomColorIndex());
+		else changeBackgroundColor(colInd);
 
 		if (platforms != null) {
 			Platform[] plats = platforms.ToArray<Platform>();
@@ -117,13 +122,16 @@ public abstract class PlatformGenerator : MonoBehaviour
 		CreateInitialPlatform();
 	}
 
-	public void restartGeneration() {
-		print("Restarting");
-		startGeneration();
+	public void restartGeneration(int colInd = -1) {
+		startGeneration(colInd);
 	}
 	public void stopGenerating() => generating = false;
 
-	void CreatePlatform(Vector3 pos, float width, bool initial, int ColorIndex) {
+	public void continueGeneration() {
+		restartGeneration(BackgroundColorIndex);
+	}
+
+	void CreatePlatform(Vector3 pos, float width, bool initial, bool changer, int ColorIndex) {
 		GameObject plat = Instantiate(PlatformPrefab, pos, Quaternion.identity);
 		Platform platform = plat.GetComponent<Platform>();
 		platform.platformGenerator = this;
@@ -134,8 +142,18 @@ public abstract class PlatformGenerator : MonoBehaviour
 		platform.setSpeed(platformSpeed);
 		platform.changeColor(ColorIndex);
 		platformIndex++;
+
+		if (changer) {
+			GameObject colChanger = Instantiate(ColorChangerPrefab, pos + new Vector3(0, ColorChangerOffset, 0), Quaternion.identity);
+			ColorChanger ColChang = colChanger.GetComponent<ColorChanger>();
+			ColChang.setPlatformGenerator(this);
+
+			platform.setColorChanger(ColChang);
+			ColChang.setColor(randomColorIndexNotColor(BackgroundColorIndex, ColorIndex));
+		}
+
 	}
-	protected void CreatePlatform(Vector3 topLeft) {
+	protected void CreatePlatform(Vector3 topLeft, bool spawnChanger = true) {
 		int heightIndex = getHeightIndex(topLeft.y);
 		int maxJumpHeightIndex = Mathf.FloorToInt(player.maxJumpHeight / blockHeight) - 1;
 		int colorIndex = randomColorIndexPattern();
@@ -144,23 +162,24 @@ public abstract class PlatformGenerator : MonoBehaviour
 			if (colorIndex == BackgroundColorIndex) {
 				if (colorPatternCount == 1) colorPatternCount++;
 				else if (colorPatternCount > 1) {
-					previousPlatformHeightIndex = previousPlatformHeightIndex + maxJumpHeightIndex;
+					previousPlatformHeightIndex += maxJumpHeightIndex;
 					topLeft.y = getHeight(previousPlatformHeightIndex);
 					colorIndex = randomColorIndexNot();
 				}
 			} else {
-				previousPlatformHeightIndex = previousPlatformHeightIndex + maxJumpHeightIndex;
+				previousPlatformHeightIndex += maxJumpHeightIndex;
 				topLeft.y = getHeight(previousPlatformHeightIndex);
 			}
 		} else if (colorIndex != BackgroundColorIndex) previousPlatformHeightIndex = heightIndex;
 
-		CreatePlatform(new Vector3(topLeft.x + blockWidth / 2, topLeft.y - blockHeight / 2), blockWidth, false, colorIndex);
+		bool chagner = spawnChanger && (colorIndex != BackgroundColorIndex) && (Random.value <= ColorChangerChance);
+		CreatePlatform(new Vector3(topLeft.x + blockWidth / 2, topLeft.y - blockHeight / 2), blockWidth, false, chagner, colorIndex);
 	}
 	void CreateInitialPlatform() {
 		float midHeight = getMiddleHeight();
 		previousPlatformHeightIndex = getHeightIndex(midHeight);
 		colorPatternCount = 1;
-		CreatePlatform(new Vector3(0, midHeight - blockHeight / 2), CameraWidth, true, randomColorIndexNot()); ;
+		CreatePlatform(new Vector3(0, midHeight - blockHeight / 2), CameraWidth + HorizontalOffest * 2, true, false, randomColorIndexNot()); ;
 	}
 
 	public void changeBackgroundColor(int colIndex) {
@@ -172,7 +191,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 	}
 
 	void updateBackgroundColor() {
-		//Camera.main.backgroundColor = BackgroundColor;
+		Camera.main.backgroundColor = BackgroundColor;
 	}
 
 	public void updatePlatformColors() {
@@ -182,12 +201,26 @@ public abstract class PlatformGenerator : MonoBehaviour
 	public Color randomColor() => colors[Random.Range(0, colors.Length)];
 	public int randomColorIndex() => Random.Range(0, colors.Length);
 	public int randomColorIndexNot() {
+		return randomColorIndexNotColor(BackgroundColorIndex);
+	}
+
+	public int randomColorIndexNotColor(int NotIndex) {
 		int index = -1;
 		do {
 			index = Random.Range(0, colors.Length);
-		} while (index == BackgroundColorIndex);
+		} while (index == NotIndex);
 		return index;
 	}
+
+	public int randomColorIndexNotColor(int NotIndex, int NotIndex2) {
+		int index = -1;
+		do {
+			index = Random.Range(0, colors.Length);
+		} while (index == NotIndex || index == NotIndex2);
+		return index;
+	}
+
+
 	public int randomColorIndexPattern() {
 		int index;
 		if (previousColorIndex == BackgroundColorIndex && colorPatternCount >= colorPatternMax) {

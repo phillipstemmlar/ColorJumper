@@ -45,23 +45,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   PlayerPosition: {x: -7, y: 3}
-  PlatformPrefab: {fileID: 6081521917713528921, guid: 34f5b9c64a75f724f9148e6106bf4d81,
+  PlatformPrefab: {fileID: 493156240466661993, guid: 34f5b9c64a75f724f9148e6106bf4d81,
+    type: 3}
+  ColorChangerPrefab: {fileID: 1228428001263077140, guid: f6f3a56aa18c30748983367bfd5aeb9c,
     type: 3}
   colors: []
   alphaNotSelected: 1
-  alphaSelected: 0.1
+  alphaSelected: 0.01
   additionalSpawnChange: 0.5
   isDrawingScreenBorder: 1
-  isDrawingPlatformRect: 0
+  isDrawingPlatformRect: 1
   CameraHeight: 10
-  CameraWidth: 24.430769
+  CameraWidth: 35.732483
+  ColorChangerChance: 0.5
+  ColorChangerOffset: 1
   HorizontalOffest: 1
   VerticalOffset: 2
-  blockWidth: 2
+  blockWidth: 3
   blockHeight: 1
-  scaleMultiplier: 100
+  scaleMultiplier: 1
   intervalDistance: 0
-  platformSpeed: 5
+  platformSpeed: 7
   platformIndex: 0
   BackgroundColorIndex: 0
-  colorPatternMax: 2
+  colorPatternMax: 1
+  DoublePlatformMinimumDistance: 4
+  DoublePlatformMaximumDistance: 6
+  DoublePlatformChance: 0.3
+  DoublePlatformOpenPercentage: 0.7
