@@ -7,6 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(PlayerController2D))]
 public class Player : MonoBehaviour
 {
+
+	public GameObject PlayerTrailPrefab;
+	public Vector2 trailSpawnPoint;
+
 	public float moveSpeed = 6;
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
@@ -30,10 +34,12 @@ public class Player : MonoBehaviour
 
 	[HideInInspector] public GameManager manager;
 
-	Vector3 velocity;
+	[HideInInspector] public Vector3 velocity;
 	PlayerController2D controller;
 	[HideInInspector]
 	public ScoreManager.Score score;
+
+	bool willBeJumping, jumpKeyUp;
 
 	public float hangTime = 0.2f;
 	float hangCounter;
@@ -54,6 +60,9 @@ public class Player : MonoBehaviour
 	}
 
 	void Update() {
+		willBeJumping = false;
+		jumpKeyUp = false;
+
 		if (pauseMovement) return;
 
 		if (controller.collisions.above || controller.collisions.below) velocity.y = 0;
@@ -63,12 +72,23 @@ public class Player : MonoBehaviour
 		if (controller.collisions.below) hangCounter = hangTime;
 		else hangCounter -= Time.deltaTime;
 
-		if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below) velocity.y = maxJumpVelocity;
+		if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below) {
+			velocity.y = maxJumpVelocity;
+			willBeJumping = true;
+		}
+
 		if (Input.GetKeyDown(KeyCode.Space) && hangCounter > 0) {
 			hangCounter = -1f;
 			velocity.y = maxJumpVelocity;
+			willBeJumping = true;
 		}
-		if (Input.GetKeyUp(KeyCode.Space) && velocity.y > minJumpVelocity) velocity.y = minJumpVelocity;
+		if (Input.GetKeyUp(KeyCode.Space) && velocity.y > minJumpVelocity) {
+			velocity.y = minJumpVelocity;
+			willBeJumping = true;
+			jumpKeyUp = true;
+		}
+
+		if (willBeJumping) onJump(velocity.y, jumpKeyUp);
 
 		float targetVelocityX = input.x * moveSpeed;
 		float accTime = (controller.collisions.below) ? accelerationTimeGrounded : accelerationTimeAirborne;
@@ -82,6 +102,17 @@ public class Player : MonoBehaviour
 
 	public void Reset() {
 		velocity = new Vector3();
+	}
+
+	void onJump(float velocity_Y, bool keyUp) {
+		GameObject trail = Instantiate(PlayerTrailPrefab, new Vector3(), Quaternion.identity);
+		trail.transform.parent = transform;
+		trail.transform.localPosition = trailSpawnPoint;
+
+		PlayerTrail playerTrail = trail.GetComponent<PlayerTrail>();
+		playerTrail.player = this;
+
+		score.jump();
 	}
 
 	void checkOutofBounds() {

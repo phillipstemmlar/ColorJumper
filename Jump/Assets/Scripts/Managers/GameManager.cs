@@ -84,6 +84,7 @@ public class GameManager : MonoBehaviour
 		SaveGameData();
 		platformGenerator.onPlayerOutOfBounds(bottom);
 		showDeathScreen();
+		//ContinueLevel();
 	}
 
 	void PauseLevel() {

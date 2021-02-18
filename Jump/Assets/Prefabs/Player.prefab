@@ -67,8 +67,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -623946997
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6b0a84e9332d5e44b890bf68809ab51b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -148,8 +148,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -623946997
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: ca8c661fab435e345b3f7e591995e430, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -264,10 +264,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c34162bc3fabdbd428434c4355bfe999, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerTrailPrefab: {fileID: 7622931062751068221, guid: 68146240667fadb4bae59c6644b03ade,
+    type: 3}
+  trailSpawnPoint: {x: 0, y: 0.025}
   moveSpeed: 6
   maxJumpHeight: 5
   minJumpHeight: 1
   timeToJumpApex: 0.4
   pauseMovement: 0
   ColorIndex: 2
+  manager: {fileID: 0}
   hangTime: 0.2
