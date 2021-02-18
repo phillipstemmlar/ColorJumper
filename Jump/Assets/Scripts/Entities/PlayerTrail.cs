@@ -8,23 +8,41 @@ public class PlayerTrail : MonoBehaviour
 
 	TrailRenderer trailRenderer;
 
+	public float dyingTime = 0.1f;
+	float initAlpha;
+	Color ColorCopy;
+
 	float timer;
 	float lifetime;
+
+	bool isDead;
 
 	// Start is called before the first frame update
 	void Start() {
 		trailRenderer = GetComponent<TrailRenderer>();
 		timer = 0;
+		isDead = false;
 		lifetime = trailRenderer.time;
-		Debug.Log("Lifetime: " + lifetime);
+		initAlpha = trailRenderer.startColor.a;
+
+		ColorCopy = trailRenderer.startColor;
 	}
 
 	// Update is called once per frame
 	void Update() {
 		timer += Time.deltaTime;
-		if (timer >= lifetime || player.velocity.y <= 0) {
-			Destroy(gameObject);
-			Debug.Log("Trail Destroyed");
+
+		if (isDead) {
+
+			ColorCopy.a = Mathf.Lerp(initAlpha, 0f, timer);
+			trailRenderer.startColor = ColorCopy;
+
+			if (timer >= dyingTime) Destroy(gameObject);
+		} else if (timer >= lifetime || player.velocity.y <= 0) {
+			isDead = true;
 		}
+
 	}
+
+
 }
