@@ -17,7 +17,7 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 		generateNextPlatform();
 	}
 	protected override void onGeneratingFinished() {
-		print("Finished Generating!");
+		//print("Finished Generating!");
 	}
 
 	protected override void generateNextPlatform() {
@@ -34,7 +34,7 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 				x = Mathf.Abs(H2 - H);
 			} while (x < DoublePlatformMinimumDistance || x > DoublePlatformMaximumDistance);
 
-			Debug.Log(debugCounter + " - Diff: " + x + "    -     D: " + DoublePlatformMinimumDistance + " : " + DoublePlatformMaximumDistance);
+			//Debug.Log(debugCounter + " - Diff: " + x + "    -     D: " + DoublePlatformMinimumDistance + " : " + DoublePlatformMaximumDistance);
 			debugCounter++;
 
 			CreatePlatform(transform.position + Vector3.up * H2);

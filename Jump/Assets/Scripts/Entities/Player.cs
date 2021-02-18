@@ -126,7 +126,7 @@ public class Player : MonoBehaviour
 		minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
 	}
 	public void setPlatformGenerator(PlatformGenerator platgen) {
-		print("plat.type: " + platgen.type);
+		//print("plat.type: " + platgen.type);
 		platformGenerator = platgen;
 	}
 

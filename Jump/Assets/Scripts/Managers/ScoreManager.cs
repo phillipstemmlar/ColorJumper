@@ -5,17 +5,22 @@ using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
+	public static ScoreManager Instance;
 
 	public Player player;
 
 	public Score playerScore;
-	public HighScore highScores;
+	public HighScore highScore;
 
 	public Text textBoxScore, textBoxHighScore, textBoxScorePanel, textBoxHighScorePanel;
 
+	void Awake() {
+		DontDestroyOnLoad(gameObject);
+		Instance = this;
+	}
+
 	void Start() {
-		highScores = new HighScore();
-		playerScore = new Score(null, this);
+		Instance = this;
 	}
 
 	public void init(Player _player, Score oldScore = null) {
@@ -33,7 +38,7 @@ public class ScoreManager : MonoBehaviour
 
 	void Update() {
 		textBoxScore.text = playerScore.ToString();
-		textBoxHighScore.text = "High Score:\n" + highScores.ToString();
+		textBoxHighScore.text = "High Score:\n" + highScore.ToString();
 	}
 
 	public void RestartLevel() {
@@ -48,10 +53,15 @@ public class ScoreManager : MonoBehaviour
 		textBoxScore.enabled = false;
 		textBoxHighScore.enabled = false;
 
-		highScores.CheckScore(newScore);
+		highScore.CheckScore(newScore);
 
-		textBoxHighScorePanel.text = "High Score:\n" + highScores.ToString();
+		textBoxHighScorePanel.text = "High Score:\n" + highScore.ToString();
 		textBoxScorePanel.text = "Player Score:\n" + newScore.ToString();
+	}
+
+	public void LoadHighScore(SaveManager.SaveState state) {
+		highScore = new HighScore();
+		highScore.loadState(state);
 	}
 
 	public class Score
@@ -98,6 +108,14 @@ public class ScoreManager : MonoBehaviour
 			if (manager != null) manager.FinalizeScore(this);
 		}
 
+		public SaveManager.SaveState getState() {
+			SaveManager.SaveState state = new SaveManager.SaveState();
+			state.distance = distance;
+			state.jumps = jumps;
+			state.colorChagnes = colorChagnes;
+			return state;
+		}
+
 		public override string ToString() {
 			return jumps + "\tJumps\n" + colorChagnes + "\tColorChanges";
 		}
@@ -112,7 +130,11 @@ public class ScoreManager : MonoBehaviour
 			if (score.colorChagnes > colorChagnes) colorChagnes = score.colorChagnes;
 			if (score.distance > distance) distance = score.distance;
 		}
-
+		public void loadState(SaveManager.SaveState state) {
+			distance = state.distance;
+			jumps = state.jumps;
+			colorChagnes = state.colorChagnes;
+		}
 	}
 
 

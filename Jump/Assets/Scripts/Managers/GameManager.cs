@@ -6,11 +6,11 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour
 {
+	public static GameManager Instance;
 
 	public GameObject UnlimitedPlatformGeneratorPrefab;
 	public GameObject PlayerPrefab;
 
-	public ScoreManager scoreManager;
 	public GameObject pnlDeathScreen;
 
 
@@ -22,6 +22,11 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public PlatformGenerator platformGenerator;
 	[HideInInspector] public Player player;
 
+	void Awake() {
+		DontDestroyOnLoad(gameObject);
+		Instance = this;
+	}
+
 	void Start() {
 		btnPauseText = btnPause.GetComponentInChildren<Text>();
 		btnPause.onClick.AddListener(onPauseClicked);
@@ -32,7 +37,10 @@ public class GameManager : MonoBehaviour
 
 
 		initPlayer();
-		scoreManager.init(player);
+
+		ScoreManager.Instance.init(player);
+		LoadGameData();
+
 		initPlatformGenerator();
 
 		hideDeathScreen();
@@ -58,14 +66,14 @@ public class GameManager : MonoBehaviour
 
 	void RestartLevel() {
 		platformGenerator.restartGeneration();
-		scoreManager.RestartLevel();
+		ScoreManager.Instance.RestartLevel();
 		ResumeLevel();
 		hideDeathScreen();
 	}
 
 	void ContinueLevel() {
 		platformGenerator.continueGeneration();
-		scoreManager.ContinueLevel();
+		ScoreManager.Instance.ContinueLevel();
 		ResumeLevel();
 		hideDeathScreen();
 	}
@@ -73,6 +81,7 @@ public class GameManager : MonoBehaviour
 	public void PlayerDied(bool bottom) {
 		PauseLevel();
 		player.score.finalize();
+		SaveGameData();
 		platformGenerator.onPlayerOutOfBounds(bottom);
 		showDeathScreen();
 	}
@@ -113,6 +122,15 @@ public class GameManager : MonoBehaviour
 		noFocus();
 	}
 
+	void SaveGameData() {
+		SaveManager.Instance.state = ScoreManager.Instance.highScore.getState();
+		SaveManager.Instance.Save();
+	}
+
+	void LoadGameData() {
+		SaveManager.Instance.Load();
+		ScoreManager.Instance.LoadHighScore(SaveManager.Instance.state);
+	}
 
 	void noFocus() => EventSystem.current.SetSelectedGameObject(null);
 
