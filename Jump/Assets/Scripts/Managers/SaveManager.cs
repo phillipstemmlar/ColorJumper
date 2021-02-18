@@ -24,6 +24,7 @@ public class SaveManager : MonoBehaviour
 			state = new SaveState();
 			Save();
 		}
+		Debug.Log(SaveHelper.Serialize<SaveState>(state));
 	}
 
 

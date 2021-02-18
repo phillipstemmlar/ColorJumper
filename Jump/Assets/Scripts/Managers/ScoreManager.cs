@@ -1,18 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ScoreManager : MonoBehaviour
 {
 	public static ScoreManager Instance;
 
-	public Player player;
+	[HideInInspector] public Player player;
 
 	public Score playerScore;
 	public HighScore highScore;
-
-	public Text textBoxScore, textBoxHighScore, textBoxScorePanel, textBoxHighScorePanel;
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
@@ -20,7 +17,7 @@ public class ScoreManager : MonoBehaviour
 	}
 
 	void Start() {
-		Instance = this;
+
 	}
 
 	public void init(Player _player, Score oldScore = null) {
@@ -29,16 +26,10 @@ public class ScoreManager : MonoBehaviour
 
 		if (oldScore == null) playerScore = new Score(player, this);
 		else playerScore = new Score(oldScore);
-
-		textBoxScore.enabled = true;
-		textBoxHighScore.enabled = true;
-		textBoxScorePanel.text = "";
-		textBoxHighScorePanel.text = "";
 	}
 
 	void Update() {
-		textBoxScore.text = playerScore.ToString();
-		textBoxHighScore.text = "High Score:\n" + highScore.ToString();
+
 	}
 
 	public void RestartLevel() {
@@ -50,13 +41,7 @@ public class ScoreManager : MonoBehaviour
 	}
 
 	void FinalizeScore(Score newScore) {
-		textBoxScore.enabled = false;
-		textBoxHighScore.enabled = false;
-
 		highScore.CheckScore(newScore);
-
-		textBoxHighScorePanel.text = "High Score:\n" + highScore.ToString();
-		textBoxScorePanel.text = "Player Score:\n" + newScore.ToString();
 	}
 
 	public void LoadHighScore(SaveManager.SaveState state) {

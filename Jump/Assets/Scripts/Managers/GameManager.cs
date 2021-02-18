@@ -1,8 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -11,13 +10,7 @@ public class GameManager : MonoBehaviour
 	public GameObject UnlimitedPlatformGeneratorPrefab;
 	public GameObject PlayerPrefab;
 
-	public GameObject pnlDeathScreen;
-
-
-	public Button btnPause, btnRestart, btnContinue, btnHome;
-	Text btnPauseText;
-
-	bool isPaused;
+	[HideInInspector] public bool isPaused;
 
 	[HideInInspector] public PlatformGenerator platformGenerator;
 	[HideInInspector] public Player player;
@@ -28,27 +21,21 @@ public class GameManager : MonoBehaviour
 	}
 
 	void Start() {
-		btnPauseText = btnPause.GetComponentInChildren<Text>();
-		btnPause.onClick.AddListener(onPauseClicked);
-
-		btnRestart.onClick.AddListener(onRestartClicked);
-		btnContinue.onClick.AddListener(onContinueClicked);
-		btnHome.onClick.AddListener(onHomeClicked);
-
-
-		initPlayer();
-
-		ScoreManager.Instance.init(player);
-		LoadGameData();
-
-		initPlatformGenerator();
-
-		hideDeathScreen();
-		RestartLevel();
 	}
 
 	void Update() {
 
+	}
+
+	public void StartEndlessLevel() {
+		initPlayer();
+		initPlatformGenerator();
+
+		ScoreManager.Instance.init(player);
+		LoadGameData();
+
+		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.hideDeathScreen();
+		RestartLevel();
 	}
 
 	void initPlayer() {
@@ -56,6 +43,7 @@ public class GameManager : MonoBehaviour
 		player = playerGO.GetComponent<Player>();
 		player.GetComponent<PlayerController2D>().player = player;
 		player.manager = this;
+		ScoreManager.Instance.player = player;
 	}
 
 	void initPlatformGenerator() {
@@ -65,63 +53,45 @@ public class GameManager : MonoBehaviour
 
 	}
 
-	void RestartLevel() {
+	public void RestartLevel() {
 		ScoreManager.Instance.RestartLevel();
 		ResumeLevel();
-		hideDeathScreen();
+		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.hideDeathScreen();
 		platformGenerator.restartGeneration();
 	}
 
-	void ContinueLevel() {
+	public void ContinueLevel() {
 		platformGenerator.continueGeneration();
 		ScoreManager.Instance.ContinueLevel();
 		ResumeLevel();
-		hideDeathScreen();
+		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.hideDeathScreen();
 	}
 
 	public void PlayerDied(bool bottom) {
 		PauseLevel();
 		player.score.finalize();
+		EndlessLevelScene.Instance.PlayerDied();
 		SaveGameData();
 		platformGenerator.onPlayerOutOfBounds(bottom);
-		showDeathScreen();
-		//ContinueLevel();
+		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.showDeathScreen();
 	}
 
-	void PauseLevel() {
+	public void PauseLevel() {
 		isPaused = true;
 		Time.timeScale = 0;
-		btnPauseText.text = "Resume";
 	}
 
-	void ResumeLevel() {
+	public void ResumeLevel() {
 		isPaused = false;
 		Time.timeScale = 1;
-		btnPauseText.text = "Pause";
-	}
-
-	void onPauseClicked() {
-		if (isPaused) ResumeLevel();
-		else PauseLevel();
-
-		noFocus();
-	}
-
-	void onRestartClicked() {
-		RestartLevel();
-		noFocus();
-	}
-
-	void onContinueClicked() {
-		//must watch advertisement first
-		ContinueLevel();
-		noFocus();
 	}
 
 
-	void onHomeClicked() {
-		//GotToHome();
-		noFocus();
+
+	public void MainMenuStartClicked() {
+		Debug.Log("Loading EndlessLevel");
+		SceneManager.LoadScene(sceneName: "EndlessLevel");
+		Debug.Log("Loading EndlessLevel - done");
 	}
 
 	void SaveGameData() {
@@ -133,10 +103,4 @@ public class GameManager : MonoBehaviour
 		SaveManager.Instance.Load();
 		ScoreManager.Instance.LoadHighScore(SaveManager.Instance.state);
 	}
-
-	void noFocus() => EventSystem.current.SetSelectedGameObject(null);
-
-	void showDeathScreen() => pnlDeathScreen.SetActive(true);
-	void hideDeathScreen() => pnlDeathScreen.SetActive(false);
-
 }
