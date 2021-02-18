@@ -68,6 +68,7 @@ public class Player : MonoBehaviour
 		if (controller.collisions.above || controller.collisions.below) velocity.y = 0;
 
 		Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+		input.x = 0f;
 
 		if (controller.collisions.below) hangCounter = hangTime;
 		else hangCounter -= Time.deltaTime;
@@ -98,6 +99,8 @@ public class Player : MonoBehaviour
 
 		controller.Move(velocity * Time.deltaTime);
 		checkOutofBounds();
+
+		score.travel(platformGenerator.platformSpeed * Time.deltaTime);
 	}
 
 	public void Reset() {

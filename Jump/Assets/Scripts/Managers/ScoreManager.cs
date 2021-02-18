@@ -102,6 +102,9 @@ public class ScoreManager : MonoBehaviour
 		public void jump() {
 			if (!isFinal) jumps++;
 		}
+		public void travel(float dist) {
+			if (!isFinal) distance += dist;
+		}
 
 		public void finalize() {
 			isFinal = true;
@@ -117,7 +120,7 @@ public class ScoreManager : MonoBehaviour
 		}
 
 		public override string ToString() {
-			return jumps + "\tJumps\n" + colorChagnes + "\tColorChanges";
+			return Mathf.RoundToInt(distance) + "\tDistance\n" + jumps + "\tJumps\n" + colorChagnes + "\tColorChanges";
 		}
 	}
 

@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
 		initPlatformGenerator();
 
 		hideDeathScreen();
-		ResumeLevel();
+		RestartLevel();
 	}
 
 	void Update() {
@@ -62,13 +62,14 @@ public class GameManager : MonoBehaviour
 		GameObject platformGen = Instantiate(UnlimitedPlatformGeneratorPrefab, Vector3.zero, Quaternion.identity);
 		platformGenerator = platformGen.GetComponent<UnlimitedPlatformGenerator>();
 		platformGenerator.player = player;
+
 	}
 
 	void RestartLevel() {
-		platformGenerator.restartGeneration();
 		ScoreManager.Instance.RestartLevel();
 		ResumeLevel();
 		hideDeathScreen();
+		platformGenerator.restartGeneration();
 	}
 
 	void ContinueLevel() {

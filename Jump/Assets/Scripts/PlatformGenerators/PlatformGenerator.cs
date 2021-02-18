@@ -12,6 +12,9 @@ public abstract class PlatformGenerator : MonoBehaviour
 	public GameObject ColorChangerPrefab;
 	public HashSet<Platform> platforms;
 
+
+	HashSet<ColorChanger> colorChangers;
+
 	[HideInInspector]
 	public Color[] colors;
 
@@ -77,12 +80,10 @@ public abstract class PlatformGenerator : MonoBehaviour
 	void Start() {
 		type = Type.none;
 		transform.position = RightOfScreen;
-		calculateCameraDimentions();
-		colors = createColorsArray();
-		calculateInterval();
-		calculateHeightValues();
+
+		Debug.Log("Start: " + RightOfScreen);
+
 		init();
-		startGeneration();
 	}
 
 	void FixedUpdate() {
@@ -106,6 +107,11 @@ public abstract class PlatformGenerator : MonoBehaviour
 	}
 
 	public void startGeneration(int colInd = -1) {
+		calculateCameraDimentions();
+		colors = createColorsArray();
+		calculateInterval();
+		calculateHeightValues();
+		transform.position = RightOfScreen;
 		configurePlayer();
 		generating = true;
 		finishedGenerating = false;
@@ -119,6 +125,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 			for (int i = 0; i < plats.Length; ++i) if (plats[i] != null) plats[i].Die();
 		}
 		platforms = new HashSet<Platform>();
+		colorChangers = new HashSet<ColorChanger>();
 		CreateInitialPlatform();
 	}
 
@@ -150,6 +157,8 @@ public abstract class PlatformGenerator : MonoBehaviour
 
 			platform.setColorChanger(ColChang);
 			ColChang.setColor(randomColorIndexNotColor(BackgroundColorIndex, ColorIndex));
+
+			colorChangers.Add(ColChang);
 		}
 
 	}
@@ -179,7 +188,12 @@ public abstract class PlatformGenerator : MonoBehaviour
 		float midHeight = getMiddleHeight();
 		previousPlatformHeightIndex = getHeightIndex(midHeight);
 		colorPatternCount = 1;
-		CreatePlatform(new Vector3(0, midHeight - blockHeight / 2), CameraWidth + HorizontalOffest * 2, true, false, randomColorIndexNot()); ;
+
+		float wid = CameraWidth + HorizontalOffest * 2;
+
+
+
+		CreatePlatform(new Vector3(0, midHeight - blockHeight / 2), wid, true, false, randomColorIndexNot()); ;
 	}
 
 	public void changeBackgroundColor(int colIndex) {
@@ -188,10 +202,18 @@ public abstract class PlatformGenerator : MonoBehaviour
 		}
 		BackgroundColorIndex = colIndex;
 		updateBackgroundColor();
+		removeInvalidColoChangers();
 	}
 
 	void updateBackgroundColor() {
 		Camera.main.backgroundColor = BackgroundColor;
+	}
+
+	void removeInvalidColoChangers() {
+		if (colorChangers != null) {
+			ColorChanger[] cols = colorChangers.ToArray<ColorChanger>();
+			for (int i = 0; i < cols.Length; ++i) if (cols[i] != null && cols[i].ColorIndex == BackgroundColorIndex) cols[i].Die();
+		}
 	}
 
 	public void updatePlatformColors() {

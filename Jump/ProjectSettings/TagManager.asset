@@ -10,6 +10,7 @@ TagManager:
   - platform_left
   - platform_right
   - platform_middel
+  - VFX
   layers:
   - Default
   - TransparentFX
@@ -52,4 +53,7 @@ TagManager:
     locked: 0
   - name: Player
     uniqueID: 3671020299
+    locked: 0
+  - name: Consumable
+    uniqueID: 962024055
     locked: 0

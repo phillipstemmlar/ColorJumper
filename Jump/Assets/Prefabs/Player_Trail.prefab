@@ -152,3 +152,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   dyingTime: 0.4
+  dyingVelocity: 1

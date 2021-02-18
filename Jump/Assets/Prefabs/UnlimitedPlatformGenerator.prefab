@@ -57,7 +57,7 @@ MonoBehaviour:
   isDrawingPlatformRect: 1
   CameraHeight: 10
   CameraWidth: 35.732483
-  ColorChangerChance: 0.5
+  ColorChangerChance: 1
   ColorChangerOffset: 1
   HorizontalOffest: 1
   VerticalOffset: 2

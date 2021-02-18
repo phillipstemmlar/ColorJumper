@@ -17,14 +17,22 @@ public class ColorChanger : MonoBehaviour
 	[HideInInspector]
 	public bool triggered = false;
 
+	SpriteRenderer[] spriteRenderes;
+
 	void Awake() {
 		collider = GetComponent<BoxCollider2D>();
-		spriteRenderer = GetComponent<SpriteRenderer>();
+
+		spriteRenderes = GetComponentsInChildren<SpriteRenderer>();
 	}
 
 	public void setColor(int newColorIndex) {
 		ColorIndex = newColorIndex;
-		spriteRenderer.color = platformGenerator.colors[ColorIndex];
+		Color color = platformGenerator.colors[ColorIndex];
+
+		foreach (SpriteRenderer rend in spriteRenderes) {
+			if (rend.gameObject.tag == "ColorChanger") rend.color = color;
+		}
+
 	}
 
 	public void change() {

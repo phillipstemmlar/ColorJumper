@@ -9,6 +9,7 @@ public class PlayerTrail : MonoBehaviour
 	TrailRenderer trailRenderer;
 
 	public float dyingTime = 0.1f;
+	public float dyingVelocity = 0.5f;
 	float initAlpha;
 	Color ColorCopy;
 
@@ -38,7 +39,7 @@ public class PlayerTrail : MonoBehaviour
 			trailRenderer.startColor = ColorCopy;
 
 			if (timer >= dyingTime) Destroy(gameObject);
-		} else if (timer >= lifetime || player.velocity.y <= 0) {
+		} else if (timer >= lifetime || player.velocity.y <= dyingVelocity) {
 			isDead = true;
 		}
 

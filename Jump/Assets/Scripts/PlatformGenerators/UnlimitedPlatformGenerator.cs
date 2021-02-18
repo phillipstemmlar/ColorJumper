@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class UnlimitedPlatformGenerator : PlatformGenerator
 {
-
 	public float DoublePlatformMinimumDistance = 4f;
 	public float DoublePlatformMaximumDistance = 6f;
 	public float DoublePlatformChance = 0.5f;
