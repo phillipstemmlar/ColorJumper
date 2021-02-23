@@ -21,6 +21,14 @@ public class GameManager : MonoBehaviour
 	}
 
 	void Start() {
+
+		Debug.Log("GM start");
+		LoadGameData();
+
+		Debug.Log("GM Load");
+		MainMenuScene.Instance.init();
+
+		Debug.Log("GM done");
 	}
 
 	void Update() {
@@ -56,7 +64,7 @@ public class GameManager : MonoBehaviour
 	public void RestartLevel() {
 		ScoreManager.Instance.RestartLevel();
 		ResumeLevel();
-		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.hideDeathScreen();
+		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.init();
 		platformGenerator.restartGeneration();
 	}
 
@@ -64,8 +72,10 @@ public class GameManager : MonoBehaviour
 		platformGenerator.continueGeneration();
 		ScoreManager.Instance.ContinueLevel();
 		ResumeLevel();
-		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.hideDeathScreen();
+		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.init();
 	}
+
+
 
 	public void PlayerDied(bool bottom) {
 		PauseLevel();
@@ -86,12 +96,16 @@ public class GameManager : MonoBehaviour
 		Time.timeScale = 1;
 	}
 
-
-
 	public void MainMenuStartClicked() {
 		Debug.Log("Loading EndlessLevel");
 		SceneManager.LoadScene(sceneName: "EndlessLevel");
 		Debug.Log("Loading EndlessLevel - done");
+	}
+
+	public void GotToHome() {
+		Debug.Log("Loading MainMenu");
+		SceneManager.LoadScene(sceneName: "MainMenu");
+		Debug.Log("Loading MainMenu - done");
 	}
 
 	void SaveGameData() {

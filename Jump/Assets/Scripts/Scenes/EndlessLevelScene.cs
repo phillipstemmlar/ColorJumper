@@ -43,6 +43,7 @@ public class EndlessLevelScene : MonoBehaviour
 		textBoxHighScore.enabled = true;
 		textBoxScorePanel.text = "";
 		textBoxHighScorePanel.text = "";
+		hideDeathScreen();
 	}
 
 	public void PlayerDied() {
@@ -75,7 +76,7 @@ public class EndlessLevelScene : MonoBehaviour
 
 
 	void onHomeClicked() {
-		//GameManager.GotToHome();
+		GameManager.Instance.GotToHome();
 		noFocus();
 	}
 

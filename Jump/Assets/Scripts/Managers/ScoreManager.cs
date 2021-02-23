@@ -47,6 +47,11 @@ public class ScoreManager : MonoBehaviour
 	public void LoadHighScore(SaveManager.SaveState state) {
 		highScore = new HighScore();
 		highScore.loadState(state);
+
+
+		Debug.Log("SCM - high");
+		Debug.Log(highScore.ToString());
+		Debug.Log("SCM done");
 	}
 
 	public class Score
