@@ -10,8 +10,8 @@ public class PlatformController : RaycastController
 	List<PassengerMovement> passengerMovements;
 	Dictionary<Transform, PlayerController2D> passengerDictionary = new Dictionary<Transform, PlayerController2D>();
 
-	public override void Start() {
-		base.Start();
+	public override void Awake() {
+		base.Awake();
 		passengerMovements = null;
 	}
 

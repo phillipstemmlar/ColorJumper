@@ -73,6 +73,30 @@ public class Player : MonoBehaviour
 		if (controller.collisions.below) hangCounter = hangTime;
 		else hangCounter -= Time.deltaTime;
 
+		//Touch Controls
+		if (Input.touchCount > 0) {
+			if (Input.touches[0].phase == TouchPhase.Began && controller.collisions.below) {
+				Debug.Log("Touch Pressed");
+				velocity.y = maxJumpVelocity;
+				willBeJumping = true;
+			}
+
+			if (Input.touches[0].phase == TouchPhase.Began && hangCounter > 0) {
+				Debug.Log("Touch Pressed");
+				hangCounter = -1f;
+				velocity.y = maxJumpVelocity;
+				willBeJumping = true;
+			}
+
+			if (Input.touches[0].phase == TouchPhase.Ended && velocity.y > minJumpVelocity) {
+				Debug.Log("Touch Lifted/Released");
+				velocity.y = minJumpVelocity;
+				willBeJumping = true;
+				jumpKeyUp = true;
+			}
+		}
+
+		//Keyboard controls
 		if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below) {
 			velocity.y = maxJumpVelocity;
 			willBeJumping = true;
@@ -89,6 +113,7 @@ public class Player : MonoBehaviour
 			jumpKeyUp = true;
 		}
 
+		//Calculations
 		if (willBeJumping) onJump(velocity.y, jumpKeyUp);
 
 		float targetVelocityX = input.x * moveSpeed;

@@ -9,12 +9,11 @@ public class PlayerController2D : RaycastController
 
 	public CollisionInfo collisions;
 
-	void Awake() {
+	public override void Awake() {
+		base.Awake();
 		player = GetComponent<Player>();
 	}
-	public override void Start() {
-		base.Start();
-	}
+
 	public void Move(Vector3 velocity, bool standingOnPlatform = false) {
 		UpdateRaycastOrigins();
 		collisions.Reset();
