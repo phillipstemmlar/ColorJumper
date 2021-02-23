@@ -276,6 +276,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 
 
 	private void OnDrawGizmos() {
+		return;
 		calculateCameraDimentions();
 		if (isDrawingScreenBorder) drawScreenBorder();
 
@@ -292,7 +293,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 		//print("Platform W: " + blockWidth + " H: " + blockHeight);
 		//print("Scaled W: " + (blockWidth * scaleMultiplier) + " H: " + (blockHeight * scaleMultiplier));
 
-		if (!EditorApplication.isPlaying && player != null) player.setXY(PlayerPosition);
+		//if (!EditorApplication.isPlaying && player != null) player.setXY(PlayerPosition);
 	}
 
 	void drawScreenBorder() {
