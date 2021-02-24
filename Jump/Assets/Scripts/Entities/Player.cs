@@ -52,6 +52,7 @@ public class Player : MonoBehaviour
 	private void Awake() {
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		controller = GetComponent<PlayerController2D>();
+		controller.collider = GetComponent<BoxCollider2D>();
 	}
 
 	void Start() {
@@ -126,6 +127,15 @@ public class Player : MonoBehaviour
 		checkOutofBounds();
 
 		score.travel(platformGenerator.platformSpeed * Time.deltaTime);
+	}
+
+	private void OnDrawGizmos() {
+		float Width = 0.55f;
+		float Height = 0.9f;
+		Vector3 offset = new Vector3(0.01f, 0.02f, 0f);
+
+		Platform.Rect rect = new Platform.Rect(transform.position + offset, Width, Height);
+		rect.draw(Color.yellow);
 	}
 
 	public void Reset() {

@@ -5,7 +5,7 @@ public class PlayerController2D : RaycastController
 	public float maxClimpAngle = 80;
 	public float maxDecendAngle = 75;
 
-	public Player player;
+	[HideInInspector] public Player player;
 
 	public CollisionInfo collisions;
 

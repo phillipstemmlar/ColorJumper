@@ -1,0 +1,206 @@
+Using pre-set license
+Built from '2020.2/staging' branch; Version is '2020.2.5f1 (e2c53f129de5) revision 14861631'; Using compiler version '192528614'; Build Type 'Release'
+OS: 'Windows 10 Enterprise; OS build 18363.1379; Version 1909; 64bit' Language: 'en' Physical Memory: 16317 MB
+BatchMode: 1, IsHumanControllingUs: 0, StartBugReporterOnCrash: 0, Is64bit: 1, IsPro: 0
+
+ COMMAND LINE ARGUMENTS:
+C:\Program Files\Unity\Hub\Editor\2020.2.5f1\Editor\Unity.exe
+-adb2
+-batchMode
+-noUpm
+-name
+AssetImportWorker0
+-projectPath
+C:/gamedev/ColorJump/Jump
+-logFile
+Logs/AssetImportWorker0.log
+-srvPort
+49958
+Successfully changed project path to: C:/gamedev/ColorJump/Jump
+C:/gamedev/ColorJump/Jump
+Using Asset Import Pipeline V2.
+Refreshing native plugins compatible for Editor in 80.64 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Initialize engine version: 2020.2.5f1 (e2c53f129de5)
+[Subsystems] Discovering subsystems at path C:/Program Files/Unity/Hub/Editor/2020.2.5f1/Editor/Data/Resources/UnitySubsystems
+[Subsystems] Discovering subsystems at path C:/gamedev/ColorJump/Jump/Assets
+GfxDevice: creating device client; threaded=0
+Direct3D:
+    Version:  Direct3D 11.0 [level 11.1]
+    Renderer: NVIDIA GeForce GTX 1660 Ti (ID=0x2182)
+    Vendor:   
+    VRAM:     5991 MB
+    Driver:   27.21.14.6140
+Initialize mono
+Mono path[0] = 'C:/Program Files/Unity/Hub/Editor/2020.2.5f1/Editor/Data/Managed'
+Mono path[1] = 'C:/Program Files/Unity/Hub/Editor/2020.2.5f1/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
+Mono config path = 'C:/Program Files/Unity/Hub/Editor/2020.2.5f1/Editor/Data/MonoBleedingEdge/etc'
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56488
+Begin MonoManager ReloadAssembly
+Registering precompiled unity dll's ...
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.2.5f1/Editor/Data/PlaybackEngines/WebGLSupport/UnityEditor.WebGL.Extensions.dll
+Register platform support module: C:/Program Files/Unity/Hub/Editor/2020.2.5f1/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
+Registered in 0.129242 seconds.
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 33.46 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  3.665 seconds
+Platform modules already initialized, skipping
+Registering precompiled user dll's ...
+Registered in 0.030890 seconds.
+Begin MonoManager ReloadAssembly
+Native extension for WindowsStandalone target not found
+Native extension for WebGL target not found
+Refreshing native plugins compatible for Editor in 33.74 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Invoked RoslynAnalysisRunner static constructor.
+RoslynAnalysisRunner will not be running.
+RoslynAnalysisRunner has terminated.
+Mono: successfully reloaded assembly
+- Completed reload, in  2.162 seconds
+Platform modules already initialized, skipping
+========================================================================
+Worker process is ready to serve import requests
+Launched and connected shader compiler UnityShaderCompiler.exe after 0.07 seconds
+Refreshing native plugins compatible for Editor in 0.32 ms, found 1 plugins.
+Preloading 0 native plugins for Editor in 0.00 ms.
+Unloading 1786 Unused Serialized files (Serialized files now loaded: 0)
+System memory in use before: 103.0 MB.
+System memory in use after: 103.1 MB.
+
+Unloading 18 unused Assets to reduce memory usage. Loaded Objects now: 2256.
+Total: 1.840900 ms (FindLiveObjects: 0.168800 ms CreateObjectMapping: 0.077600 ms MarkObjects: 1.575000 ms  DeleteObjects: 0.018500 ms)
+
+========================================================================
+Received Import Request.
+  path: Assets/Textures/player_body.png
+  artifactKey: Guid(6b0a84e9332d5e44b890bf68809ab51b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/player_body.png using Guid(6b0a84e9332d5e44b890bf68809ab51b) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2f5541c3458c025b9a4da08ee06dd16d') in 0.119135 seconds
+  Import took 0.122531 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000221 seconds.
+  path: Assets/Textures/glow.png
+  artifactKey: Guid(189b9af70cbfd69429e4cae74d20394e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/glow.png using Guid(189b9af70cbfd69429e4cae74d20394e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '7b03306c64ce17c0e5725ef72c957469') in 0.024108 seconds
+  Import took 0.026815 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000197 seconds.
+  path: Assets/Textures/plat.png
+  artifactKey: Guid(af3ea378b8aa7484a956d85297e95354) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/plat.png using Guid(af3ea378b8aa7484a956d85297e95354) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '4432bc59a62716ff52ee8abf9349acb5') in 0.026654 seconds
+  Import took 0.029950 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000234 seconds.
+  path: Assets/Textures/Left_white.png
+  artifactKey: Guid(27ac588ef0c833544ba3a3708bafc0a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Left_white.png using Guid(27ac588ef0c833544ba3a3708bafc0a3) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '191f8dc59d04c2c5ca6d2526989d47f2') in 0.025299 seconds
+  Import took 0.028184 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000253 seconds.
+  path: Assets/Textures/Middle.png
+  artifactKey: Guid(8d71b8fe04ff5df4ab24f2b9581aa8ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Middle.png using Guid(8d71b8fe04ff5df4ab24f2b9581aa8ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '84f99b29cc5d6093650a1bbc9556bbfe') in 0.034085 seconds
+  Import took 0.037241 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000254 seconds.
+  path: Assets/Textures/pallet.png
+  artifactKey: Guid(b3cbb6e4bbfbb884d9e4200222f6d7f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/pallet.png using Guid(b3cbb6e4bbfbb884d9e4200222f6d7f4) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6c563632238c6f1d052dfd112262e341') in 0.034348 seconds
+  Import took 0.037780 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000215 seconds.
+  path: Assets/Textures/Right.png
+  artifactKey: Guid(388f0a2bd0618b54a95fd2e982f239ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Right.png using Guid(388f0a2bd0618b54a95fd2e982f239ee) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '1ea60064f0c5b7cf7c99c18d6c5d9a95') in 0.020280 seconds
+  Import took 0.023000 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000252 seconds.
+  path: Assets/Textures/Left.png
+  artifactKey: Guid(534cfefafc80f1b4bbd21ab833f8a21e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Left.png using Guid(534cfefafc80f1b4bbd21ab833f8a21e) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'd098cd8b2133700a52ebe830ff64f721') in 0.018652 seconds
+  Import took 0.021193 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000223 seconds.
+  path: Assets/Textures/ColorChanger.png
+  artifactKey: Guid(0ef8b445d5459654baec007724ac8de8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/ColorChanger.png using Guid(0ef8b445d5459654baec007724ac8de8) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '119353cb3d2d05346e7efeb242831e99') in 0.077935 seconds
+  Import took 0.080652 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000209 seconds.
+  path: Assets/Textures/Middle_White.png
+  artifactKey: Guid(1d30468d9f0b45d48855b492b833b6c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Middle_White.png using Guid(1d30468d9f0b45d48855b492b833b6c6) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2a7be2e1a40c7f644d08eeae2252bf6f') in 0.020569 seconds
+  Import took 0.023228 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000261 seconds.
+  path: Assets/Textures/plat_white.png
+  artifactKey: Guid(4a45e3e50aab6b941ac92571325e0317) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/plat_white.png using Guid(4a45e3e50aab6b941ac92571325e0317) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'e1bf8c24076fa9c319834f3d2b26549c') in 0.020742 seconds
+  Import took 0.023626 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000204 seconds.
+  path: Assets/Textures/player_head.png
+  artifactKey: Guid(ca8c661fab435e345b3f7e591995e430) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/player_head.png using Guid(ca8c661fab435e345b3f7e591995e430) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '696ba7cb3c4daeed35847dcd7bf29cd5') in 0.019402 seconds
+  Import took 0.022310 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000197 seconds.
+  path: Assets/Textures/Right_white.png
+  artifactKey: Guid(a59f90d13a0fa584796731cd334c6804) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/Right_white.png using Guid(a59f90d13a0fa584796731cd334c6804) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '03794302beb44dda66cdf9ff598dab12') in 0.019633 seconds
+  Import took 0.022189 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000248 seconds.
+  path: Assets/Textures/white_pixel.png
+  artifactKey: Guid(4bf2455716a40e345aa42f454d784b7a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/white_pixel.png using Guid(4bf2455716a40e345aa42f454d784b7a) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'f3ee53167485d17505ff4a7aacbc81d8') in 0.020454 seconds
+  Import took 0.023161 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000215 seconds.
+  path: Assets/Textures/glow2.png
+  artifactKey: Guid(5a521a9c3e1598b4daf16af3581f7643) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/glow2.png using Guid(5a521a9c3e1598b4daf16af3581f7643) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'c3a18510b535b4ae0cb2be506b4b5582') in 0.017085 seconds
+  Import took 0.019990 seconds .
+
+========================================================================
+Received Import Request.
+  Time since last request: 0.000254 seconds.
+  path: Assets/Textures/platform0.png
+  artifactKey: Guid(62533470cbe81284c903e16ad7870d8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
+Start importing Assets/Textures/platform0.png using Guid(62533470cbe81284c903e16ad7870d8c) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '3a1b251a751f1428a4976ac4b3a10928') in 0.019144 seconds
+  Import took 0.022221 seconds .
+
+AssetImportWorkerClient::OnTransportError - code=2 error=End of file
