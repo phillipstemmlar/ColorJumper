@@ -10,6 +10,7 @@ public class MainMenuScene : MonoBehaviour
 
 	public Text highScoreText;
 	public Button btnStart;
+	public Button btnShop;
 
 	private void Awake() {
 		Instance = this;
@@ -17,6 +18,8 @@ public class MainMenuScene : MonoBehaviour
 
 	void Start() {
 		btnStart.onClick.AddListener(onStartClicked);
+		btnShop.onClick.AddListener(onShopClicked);
+		Debug.Log("Player Sprite Index - " + GameManager.Instance.PlayerSpriteIndex);
 	}
 
 
@@ -25,14 +28,14 @@ public class MainMenuScene : MonoBehaviour
 	}
 
 	public void init() {
-
-		Debug.Log("MM init");
-
 		highScoreText.text = "High Score:\n" + ScoreManager.Instance.highScore.ToString();
 	}
 
 	void onStartClicked() {
 		GameManager.Instance.MainMenuStartClicked();
 	}
-
+	void onShopClicked() {
+		Debug.Log("Player Sprite Index - " + GameManager.Instance.PlayerSpriteIndex);
+		GameManager.Instance.MainMenuShopClicked();
+	}
 }

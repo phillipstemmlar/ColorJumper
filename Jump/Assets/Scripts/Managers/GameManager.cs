@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-	public static GameManager Instance;
+	public static GameManager Instance = null;
 
 	public GameObject UnlimitedPlatformGeneratorPrefab;
 	public GameObject PlayerPrefab;
@@ -14,21 +14,20 @@ public class GameManager : MonoBehaviour
 
 	[HideInInspector] public PlatformGenerator platformGenerator;
 	[HideInInspector] public Player player;
+	[HideInInspector] public int PlayerSpriteIndex = Player.DefaultSpriteIndex;
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
-		Instance = this;
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			Object.Destroy(gameObject);
+		}
 	}
 
 	void Start() {
-
-		Debug.Log("GM start");
 		LoadGameData();
-
-		Debug.Log("GM Load");
 		MainMenuScene.Instance.init();
-
-		Debug.Log("GM done");
 	}
 
 	void Update() {
@@ -40,6 +39,7 @@ public class GameManager : MonoBehaviour
 		initPlatformGenerator();
 
 		ScoreManager.Instance.init(player);
+		SaveGameData();
 		LoadGameData();
 
 		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.hideDeathScreen();
@@ -51,7 +51,15 @@ public class GameManager : MonoBehaviour
 		player = playerGO.GetComponent<Player>();
 		player.GetComponent<PlayerController2D>().player = player;
 		player.manager = this;
+		player.SpriteIndex = PlayerSpriteIndex;
 		ScoreManager.Instance.player = player;
+	}
+
+	public void playerSpriteIndexChanged(int newIndex) {
+		PlayerSpriteIndex = newIndex;
+
+		SaveManager.Instance.state.PlayerSpriteIndex = PlayerSpriteIndex;
+
 	}
 
 	void initPlatformGenerator() {
@@ -97,24 +105,32 @@ public class GameManager : MonoBehaviour
 	}
 
 	public void MainMenuStartClicked() {
-		Debug.Log("Loading EndlessLevel");
+		//Debug.Log("Loading EndlessLevel");
 		SceneManager.LoadScene(sceneName: "EndlessLevel");
-		Debug.Log("Loading EndlessLevel - done");
+		//Debug.Log("Loading EndlessLevel - done");
+	}
+
+	public void MainMenuShopClicked() {
+		//Debug.Log("Loading ShopMenu");
+		SceneManager.LoadScene(sceneName: "ShopMenu");
+		//Debug.Log("Loading ShopMenu - done");
 	}
 
 	public void GotToHome() {
-		Debug.Log("Loading MainMenu");
+		//Debug.Log("Loading MainMenu");
 		SceneManager.LoadScene(sceneName: "MainMenu");
-		Debug.Log("Loading MainMenu - done");
+		//Debug.Log("Loading MainMenu - done");
 	}
 
 	void SaveGameData() {
 		SaveManager.Instance.state = ScoreManager.Instance.highScore.getState();
+		SaveManager.Instance.state.PlayerSpriteIndex = PlayerSpriteIndex;
 		SaveManager.Instance.Save();
 	}
 
 	void LoadGameData() {
 		SaveManager.Instance.Load();
 		ScoreManager.Instance.LoadHighScore(SaveManager.Instance.state);
+		PlayerSpriteIndex = SaveManager.Instance.state.PlayerSpriteIndex;
 	}
 }

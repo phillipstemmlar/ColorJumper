@@ -45,12 +45,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnlimitedPlatformGeneratorPrefab: {fileID: 7574822204756385675, guid: 7a1bff793d265c742bc71c988d0c59ab,
     type: 3}
-  PlayerPrefab: {fileID: 7756664992222528794, guid: 6d717746f3e2b274cb03c22503c44dee,
+  PlayerPrefab: {fileID: 3735709262039061538, guid: 6d717746f3e2b274cb03c22503c44dee,
     type: 3}
-  pnlDeathScreen: {fileID: 0}
-  btnPause: {fileID: 0}
-  btnRestart: {fileID: 0}
-  btnContinue: {fileID: 0}
-  btnHome: {fileID: 0}
+  isPaused: 0
   platformGenerator: {fileID: 0}
   player: {fileID: 0}

@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/EndlessLevel.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/_Scenes/ShopMenu.unity
+    guid: b9ca301033ae63f4ab8ae13b39f76c3a
   m_configObjects: {}

@@ -6,15 +6,20 @@ using System.Xml.Serialization;
 
 public class SaveManager : MonoBehaviour
 {
-	public static SaveManager Instance { get; set; }
+	public static SaveManager Instance = null;
 	public SaveState state;
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
-		Instance = this;
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			Object.Destroy(gameObject);
+		}
 	}
 
 	public void Save() {
+		Debug.Log(SaveHelper.Serialize<SaveState>(state));
 		PlayerPrefs.SetString("save", SaveHelper.Serialize<SaveState>(state));
 	}
 
@@ -33,6 +38,7 @@ public class SaveManager : MonoBehaviour
 		public float distance = 0;
 		public int jumps = 0;
 		public int colorChagnes = 0;
+		public int PlayerSpriteIndex = 0;
 	}
 }
 

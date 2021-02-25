@@ -8,6 +8,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
 
+	[HideInInspector] public GameObject PlayerSpritePrefab;
 	public GameObject PlayerTrailPrefab;
 	public Vector2 trailSpawnPoint;
 
@@ -24,6 +25,13 @@ public class Player : MonoBehaviour
 	float minJumpVelocity;
 	float gravity;
 
+	public int SpriteIndex {
+		get { return SpriteModelIndex; }
+		set { SpriteIndexChange(value); }
+	}
+	int SpriteModelIndex = 0;
+	public static int DefaultSpriteIndex = 0;
+
 	public bool pauseMovement = false;
 
 	[HideInInspector] public int ColorIndex = -1;
@@ -31,6 +39,7 @@ public class Player : MonoBehaviour
 
 	PlatformGenerator platformGenerator = null;
 	SpriteRenderer spriteRenderer;
+	GameObject playerSprite = null;
 
 	[HideInInspector] public GameManager manager;
 
@@ -53,6 +62,8 @@ public class Player : MonoBehaviour
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		controller = GetComponent<PlayerController2D>();
 		controller.collider = GetComponent<BoxCollider2D>();
+
+		SpriteIndexChange(DefaultSpriteIndex);
 	}
 
 	void Start() {
@@ -207,6 +218,24 @@ public class Player : MonoBehaviour
 			colorChanger.trigger();
 			score.change();
 		}
+	}
+
+	void SpriteIndexChange(int index) {
+		if (index < 0) index = 0;
+		if (index >= SpriteModelManager.Instance.PlayerModelPrefabs.Length) index = SpriteModelManager.Instance.PlayerModelPrefabs.Length - 1;
+
+		SpriteModelIndex = index;
+		PlayerSpritePrefab = SpriteModelManager.Instance.PlayerModelPrefabs[SpriteModelIndex];
+
+		initSpriteModel();
+	}
+
+	void initSpriteModel() {
+		if (playerSprite != null) Destroy(playerSprite);
+
+		playerSprite = Instantiate(PlayerSpritePrefab, transform.position, Quaternion.identity);
+		playerSprite.transform.parent = transform;
+		//playerSprite.transform.localPosition = new Vector3();
 	}
 
 }

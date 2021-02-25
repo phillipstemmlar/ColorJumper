@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ScoreManager : MonoBehaviour
 {
-	public static ScoreManager Instance;
+	public static ScoreManager Instance = null;
 
 	[HideInInspector] public Player player;
 
@@ -13,7 +13,11 @@ public class ScoreManager : MonoBehaviour
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
-		Instance = this;
+		if (Instance == null) {
+			Instance = this;
+		} else {
+			Object.Destroy(gameObject);
+		}
 	}
 
 	void Start() {
