@@ -27,6 +27,7 @@ public class MainMenuScene : MonoBehaviour
 		btnShop.onClick.AddListener(onShopClicked);
 		//Debug.Log("Player Sprite Index: " + GameManager.Instance.PlayerSpriteIndex);
 		inintPlayerModel();
+		//initScore();
 	}
 
 
@@ -34,7 +35,7 @@ public class MainMenuScene : MonoBehaviour
 
 	}
 
-	public void init() {
+	public void initScore() {
 		highScoreText.text = "High Score:\n" + ScoreManager.Instance.highScore.ToString();
 	}
 

@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
 
 	void Start() {
 		LoadGameData();
-		MainMenuScene.Instance.init();
+		MainMenuScene.Instance.initScore();
 	}
 
 	void Update() {

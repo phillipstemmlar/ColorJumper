@@ -711,6 +711,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSprite_4
       objectReference: {fileID: 0}
+    - target: {fileID: 2333127313612633585, guid: 629fc76ca14db48409d2ce02e93d614e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2333127313612633586, guid: 629fc76ca14db48409d2ce02e93d614e,
         type: 3}
       propertyPath: m_RootOrder
