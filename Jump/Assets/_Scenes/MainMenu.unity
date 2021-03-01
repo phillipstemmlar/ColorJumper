@@ -382,7 +382,7 @@ Animation:
   m_GameObject: {fileID: 234066162}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 0}
+  m_Animation: {fileID: 7400000, guid: 27845b0a0e784c44498f8e251727ee1b, type: 2}
   m_Animations:
   - {fileID: 7400000, guid: 27845b0a0e784c44498f8e251727ee1b, type: 2}
   m_WrapMode: 0
@@ -1167,7 +1167,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -655.99, y: -244}
+  m_AnchoredPosition: {x: -656.01, y: -72.81}
   m_SizeDelta: {x: 585.9714, y: 145.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1623131566
@@ -1574,7 +1574,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -656, y: -74}
+  m_AnchoredPosition: {x: -656.01, y: -238}
   m_SizeDelta: {x: 585.9714, y: 145.62}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2135005401
