@@ -11,6 +11,12 @@ public class MainMenuScene : MonoBehaviour
 	public Text highScoreText;
 	public Button btnStart;
 	public Button btnShop;
+	public Button btnSettings;
+	public Button btnLeaderboard;
+
+	public Canvas canvas;
+
+	GameObject playerSprite = null;
 
 	private void Awake() {
 		Instance = this;
@@ -19,7 +25,8 @@ public class MainMenuScene : MonoBehaviour
 	void Start() {
 		btnStart.onClick.AddListener(onStartClicked);
 		btnShop.onClick.AddListener(onShopClicked);
-		Debug.Log("Player Sprite Index - " + GameManager.Instance.PlayerSpriteIndex);
+		//Debug.Log("Player Sprite Index: " + GameManager.Instance.PlayerSpriteIndex);
+		inintPlayerModel();
 	}
 
 
@@ -29,6 +36,17 @@ public class MainMenuScene : MonoBehaviour
 
 	public void init() {
 		highScoreText.text = "High Score:\n" + ScoreManager.Instance.highScore.ToString();
+	}
+
+	public void inintPlayerModel() {
+		if (playerSprite != null) Destroy(playerSprite);
+
+		Vector3 pos = Camera.main.ScreenToWorldPoint(btnStart.transform.position);
+		pos.z = 0;
+
+		playerSprite = Instantiate(SpriteModelManager.Instance.getPlayerModelPrefab(), pos, Quaternion.identity);
+		playerSprite.transform.localScale = new Vector3(7f, 7f, 1f);
+
 	}
 
 	void onStartClicked() {

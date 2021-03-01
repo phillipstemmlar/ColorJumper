@@ -20,6 +20,10 @@ public class SpriteModelManager : MonoBehaviour
 		}
 	}
 
+	public GameObject getPlayerModelPrefab() {
+		return PlayerModelPrefabs[GameManager.Instance.PlayerSpriteIndex];
+	}
+
 	public SpritePlayer[] getSprites() {
 		List<SpritePlayer> sprites = new List<SpritePlayer>();
 
