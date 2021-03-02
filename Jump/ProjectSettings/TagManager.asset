@@ -11,6 +11,10 @@ TagManager:
   - platform_right
   - platform_middel
   - VFX
+  - left
+  - right
+  - top
+  - bottom
   layers:
   - Default
   - TransparentFX

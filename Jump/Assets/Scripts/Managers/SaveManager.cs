@@ -39,6 +39,7 @@ public class SaveManager : MonoBehaviour
 		public int jumps = 0;
 		public int colorChagnes = 0;
 		public int PlayerSpriteIndex = 0;
+		public int ColorPaletteIndex = 0;
 	}
 }
 

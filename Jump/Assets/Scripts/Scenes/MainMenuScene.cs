@@ -10,7 +10,8 @@ public class MainMenuScene : MonoBehaviour
 
 	public Text highScoreText;
 	public Button btnStart;
-	public Button btnShop;
+	public Button btnCharacter;
+	public Button btnColorPalette;
 	public Button btnSettings;
 	public Button btnLeaderboard;
 
@@ -24,7 +25,8 @@ public class MainMenuScene : MonoBehaviour
 
 	void Start() {
 		btnStart.onClick.AddListener(onStartClicked);
-		btnShop.onClick.AddListener(onShopClicked);
+		btnCharacter.onClick.AddListener(onCharacterClicked);
+		btnColorPalette.onClick.AddListener(onColorPaletteClicked);
 		//Debug.Log("Player Sprite Index: " + GameManager.Instance.PlayerSpriteIndex);
 		inintPlayerModel();
 		//initScore();
@@ -53,8 +55,14 @@ public class MainMenuScene : MonoBehaviour
 	void onStartClicked() {
 		GameManager.Instance.MainMenuStartClicked();
 	}
-	void onShopClicked() {
-		Debug.Log("Player Sprite Index - " + GameManager.Instance.PlayerSpriteIndex);
-		GameManager.Instance.MainMenuShopClicked();
+	void onCharacterClicked() {
+		//Debug.Log("Player Sprite Index - " + GameManager.Instance.PlayerSpriteIndex);
+		GameManager.Instance.MainMenuCharacterClicked();
 	}
+
+	void onColorPaletteClicked() {
+		//Debug.Log("Player Sprite Index - " + GameManager.Instance.PlayerSpriteIndex);
+		GameManager.Instance.MainMenuColorPaletteClicked();
+	}
+
 }

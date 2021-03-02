@@ -174,5 +174,10 @@ public class Platform : MonoBehaviour
 			Debug.DrawLine(bottomRight, bottomLeft, col);
 			Debug.DrawLine(bottomLeft, topLeft, col);
 		}
+		public UnityEngine.Rect toRect() {
+			Vector2 mid = middle;// Camera.main.WorldToScreenPoint(middle);
+
+			return new UnityEngine.Rect(mid.x, mid.y, width, height);
+		}
 	}
 }

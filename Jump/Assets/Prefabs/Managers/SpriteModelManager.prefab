@@ -49,3 +49,8 @@ MonoBehaviour:
   - {fileID: 6839148158764019625, guid: 019c8eaeffb2fdc4ca15a6278906087b, type: 3}
   - {fileID: 3294462184401941377, guid: 61c6ee18326e0d147a80f6cb095d4680, type: 3}
   - {fileID: 2333127313612633585, guid: 629fc76ca14db48409d2ce02e93d614e, type: 3}
+  ColorPalettePrefabs:
+  - {fileID: 7438095488602804751, guid: 60f81a7789500804e8e143a3fc1e33ff, type: 3}
+  - {fileID: 5279158133692201521, guid: a6fdfc3a6d85d224eb6717fb2cb48adb, type: 3}
+  - {fileID: 6503881487023325975, guid: cde702fdfa3ef494cbd95a0fea683022, type: 3}
+  - {fileID: 7133588546010325886, guid: 0cb5e6028b7f0e64d8914c196804cdd7, type: 3}

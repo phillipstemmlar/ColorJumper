@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 	[HideInInspector] public PlatformGenerator platformGenerator;
 	[HideInInspector] public Player player;
 	[HideInInspector] public int PlayerSpriteIndex = Player.DefaultSpriteIndex;
+	[HideInInspector] public int ColorPaletteIndex = 0; //TODO: ColorManager.DefaultColorPaletteIndex;
 
 	void Awake() {
 		DontDestroyOnLoad(gameObject);
@@ -27,7 +28,10 @@ public class GameManager : MonoBehaviour
 
 	void Start() {
 		LoadGameData();
-		MainMenuScene.Instance.initScore();
+
+		if (MainMenuScene.Instance != null) {
+			MainMenuScene.Instance.initScore();
+		}
 	}
 
 	void Update() {
@@ -59,7 +63,14 @@ public class GameManager : MonoBehaviour
 		PlayerSpriteIndex = newIndex;
 
 		SaveManager.Instance.state.PlayerSpriteIndex = PlayerSpriteIndex;
+		SaveGameData();
+	}
 
+	public void colorPaletteIndexChanged(int newIndex) {
+		ColorPaletteIndex = newIndex;
+
+		SaveManager.Instance.state.ColorPaletteIndex = ColorPaletteIndex;
+		SaveGameData();
 	}
 
 	void initPlatformGenerator() {
@@ -110,9 +121,15 @@ public class GameManager : MonoBehaviour
 		//Debug.Log("Loading EndlessLevel - done");
 	}
 
-	public void MainMenuShopClicked() {
+	public void MainMenuCharacterClicked() {
 		//Debug.Log("Loading ShopMenu");
-		SceneManager.LoadScene(sceneName: "ShopMenu");
+		SceneManager.LoadScene(sceneName: "CharacterMenu");
+		//Debug.Log("Loading ShopMenu - done");
+	}
+
+	public void MainMenuColorPaletteClicked() {
+		//Debug.Log("Loading ShopMenu");
+		SceneManager.LoadScene(sceneName: "ColorPaletteMenu");
 		//Debug.Log("Loading ShopMenu - done");
 	}
 
@@ -125,6 +142,7 @@ public class GameManager : MonoBehaviour
 	void SaveGameData() {
 		SaveManager.Instance.state = ScoreManager.Instance.highScore.getState();
 		SaveManager.Instance.state.PlayerSpriteIndex = PlayerSpriteIndex;
+		SaveManager.Instance.state.ColorPaletteIndex = ColorPaletteIndex;
 		SaveManager.Instance.Save();
 	}
 
@@ -132,5 +150,6 @@ public class GameManager : MonoBehaviour
 		SaveManager.Instance.Load();
 		ScoreManager.Instance.LoadHighScore(SaveManager.Instance.state);
 		PlayerSpriteIndex = SaveManager.Instance.state.PlayerSpriteIndex;
+		ColorPaletteIndex = SaveManager.Instance.state.ColorPaletteIndex;
 	}
 }

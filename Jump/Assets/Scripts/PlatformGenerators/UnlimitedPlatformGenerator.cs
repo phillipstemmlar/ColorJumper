@@ -42,12 +42,24 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 	}
 
 	protected override Color[] createColorsArray() {
-		List<Color> cols = new List<Color>();
-		cols.Add(decCol(60, 174, 163));       //  #3caea3	rgb(60, 174, 163)
-		cols.Add(decCol(32, 99, 155));        //  #20639b	rgb(32, 99, 155)
-		cols.Add(decCol(237, 85, 59));        //  #ed553b	rgb(237, 85, 59)
-		cols.Add(decCol(246, 213, 92));       //  #f6d55c	rgb(246, 213, 92)
-		return cols.ToArray();                   //	 #173f5f	rgb(23, 63, 95)
+		//List<Color> cols = new List<Color>();
+		//cols.Add(decCol(60, 174, 163));       //  #3caea3	rgb(60, 174, 163)
+		//cols.Add(decCol(32, 99, 155));        //  #20639b	rgb(32, 99, 155)
+		//cols.Add(decCol(237, 85, 59));        //  #ed553b	rgb(237, 85, 59)
+		//cols.Add(decCol(246, 213, 92));       //  #f6d55c	rgb(246, 213, 92)
+		//return cols.ToArray();                   //	 #173f5f	rgb(23, 63, 95)
+
+		GameObject go = SpriteModelManager.Instance.getColorPalettePrefab();
+		ColorPalette palette = go.GetComponent<ColorPalette>();
+
+		Color[] colors = new Color[5];
+		colors[0] = palette.Color1;
+		colors[1] = palette.Color2;
+		colors[2] = palette.Color3;
+		colors[3] = palette.Color4;
+		colors[4] = palette.Color5;
+
+		return colors;
 	}
 
 	Color decCol(int r, int g, int b, int a = 255) {

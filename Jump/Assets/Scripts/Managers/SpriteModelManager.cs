@@ -6,9 +6,10 @@ using UnityEngine.UI;
 public class SpriteModelManager : MonoBehaviour
 {
 	public static SpriteModelManager Instance = null;
+
 	public GameObject[] PlayerModelPrefabs;
-	public Sprite[] PlayerModelHeads;
-	public Sprite[] PlayerModelBodies;
+	public GameObject[] ColorPalettePrefabs;
+
 	//public SpritePlayer test;
 
 	void Awake() {
@@ -24,32 +25,8 @@ public class SpriteModelManager : MonoBehaviour
 		return PlayerModelPrefabs[GameManager.Instance.PlayerSpriteIndex];
 	}
 
-	public SpritePlayer[] getSprites() {
-		List<SpritePlayer> sprites = new List<SpritePlayer>();
-
-		for (int i = 0; i < PlayerModelBodies.Length; ++i) {
-			Sprite body = (i < PlayerModelBodies.Length) ? PlayerModelBodies[i] : null;
-			Sprite head = (i < PlayerModelHeads.Length) ? PlayerModelHeads[i] : null;
-
-			sprites.Add(new SpritePlayer(body, head));
-		}
-
-
-		return sprites.ToArray();
-	}
-
-	public class SpritePlayer
-	{
-		public Sprite body = null;
-		public Sprite head = null;
-
-		public SpritePlayer(Sprite _body, Sprite _head = null) {
-			body = _body;
-			head = _head;
-		}
-
-		public bool isNull() => body == null && head == null;
-
+	public GameObject getColorPalettePrefab() {
+		return ColorPalettePrefabs[GameManager.Instance.ColorPaletteIndex];
 	}
 
 }
