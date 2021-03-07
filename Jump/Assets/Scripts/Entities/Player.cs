@@ -200,6 +200,7 @@ public class Player : MonoBehaviour
 		Debug.Log("HighScore Passed");
 
 		other.enabled = false;
+		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.onHighScorePassed();
 	}
 
 

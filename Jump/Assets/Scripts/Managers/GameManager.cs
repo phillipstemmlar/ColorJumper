@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
 		//Debug.Log("Loading MainMenu");
 		SceneManager.LoadScene(sceneName: "MainMenu");
 		//Debug.Log("Loading MainMenu - done");
-		if (MainMenuScene.Instance != null) MainMenuScene.Instance.initAll();
+
 	}
 
 	void SaveGameData() {

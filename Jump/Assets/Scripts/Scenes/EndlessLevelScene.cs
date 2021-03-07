@@ -15,11 +15,18 @@ public class EndlessLevelScene : MonoBehaviour
 
 	public Text textBoxScore, textBoxHighScore, textBoxScorePanel, textBoxHighScorePanel;
 
+	public Vector3 playerScoreOffset;
+	public Vector3 highscoreTextOffset;
+
+
+	Player player = null;
+	Transform HighScoreFlagTransform = null;
+
+
 	private void Awake() {
 		Instance = this;
 	}
 
-	// Start is called before the first frame update
 	void Start() {
 		btnPauseText = btnPause.GetComponentInChildren<Text>();
 		btnPause.onClick.AddListener(onPauseClicked);
@@ -30,25 +37,48 @@ public class EndlessLevelScene : MonoBehaviour
 
 		init();
 		GameManager.Instance.StartEndlessLevel();
+		player = GameManager.Instance.player;
 	}
 
-	// Update is called once per frame
 	void Update() {
-		textBoxScore.text = ScoreManager.Instance.playerScore.ToString();
-		textBoxHighScore.text = "High Score:\n" + ScoreManager.Instance.highScore.ToString();
+
+		if (HighScoreFlagTransform != null) {
+			textBoxHighScore.gameObject.SetActive(true);
+			textBoxHighScore.transform.position = HighScoreFlagTransform.position + highscoreTextOffset;
+			//textBoxHighScore.text = Mathf.RoundToInt(ScoreManager.Instance.highScore.distance).ToString();
+		}
+
+		if (textBoxHighScore.transform.position.x <= GameManager.Instance.platformGenerator.LeftOfScreen.x) {
+			textBoxHighScore.gameObject.SetActive(false);
+			textBoxHighScore = null;
+		}
+
+		textBoxScore.text = Mathf.RoundToInt(ScoreManager.Instance.playerScore.distance).ToString();
+	}
+
+	public void onHighScoreText(Transform highScoreFlag) {
+		HighScoreFlagTransform = highScoreFlag;
+	}
+
+	public void onHighScorePassed() {
+		HighScoreFlagTransform = null;
+		textBoxHighScore.gameObject.SetActive(false);
 	}
 
 	public void init() {
-		textBoxScore.enabled = true;
-		textBoxHighScore.enabled = true;
+		textBoxScore.transform.parent.gameObject.SetActive(true);
+		btnPause.gameObject.SetActive(true);
+
 		textBoxScorePanel.text = "";
 		textBoxHighScorePanel.text = "";
 		hideDeathScreen();
+		HighScoreFlagTransform = null;
+		textBoxHighScore.gameObject.SetActive(false);
 	}
 
 	public void PlayerDied() {
-		textBoxScore.enabled = false;
-		textBoxHighScore.enabled = false;
+		textBoxScore.transform.parent.gameObject.SetActive(false);
+		btnPause.gameObject.SetActive(false);
 
 		textBoxHighScorePanel.text = "High Score:\n" + ScoreManager.Instance.highScore.ToString();
 		textBoxScorePanel.text = "Player Score:\n" + ScoreManager.Instance.playerScore.ToString();
