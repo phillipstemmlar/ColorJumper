@@ -119,6 +119,7 @@ public class GameManager : MonoBehaviour
 		//Debug.Log("Loading EndlessLevel");
 		SceneManager.LoadScene(sceneName: "EndlessLevel");
 		//Debug.Log("Loading EndlessLevel - done");
+		MainMenuScene.Instance.inintPlayerModel();
 	}
 
 	public void MainMenuCharacterClicked() {
@@ -151,5 +152,7 @@ public class GameManager : MonoBehaviour
 		ScoreManager.Instance.LoadHighScore(SaveManager.Instance.state);
 		PlayerSpriteIndex = SaveManager.Instance.state.PlayerSpriteIndex;
 		ColorPaletteIndex = SaveManager.Instance.state.ColorPaletteIndex;
+
+		if (MainMenuScene.Instance != null) MainMenuScene.Instance.inintPlayerModel();
 	}
 }

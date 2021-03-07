@@ -44,6 +44,8 @@ public class MainMenuScene : MonoBehaviour
 	public void inintPlayerModel() {
 		if (playerSprite != null) Destroy(playerSprite);
 
+		Debug.Log("player: " + GameManager.Instance.PlayerSpriteIndex);
+
 		Vector3 pos = Camera.main.ScreenToWorldPoint(btnStart.transform.position);
 		pos.z = 0;
 
