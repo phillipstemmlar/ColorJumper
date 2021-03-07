@@ -25,6 +25,7 @@ public class Player : MonoBehaviour
 	float minJumpVelocity;
 	float gravity;
 
+	public bool isAlive { get; set; }
 	public int SpriteIndex {
 		get { return SpriteModelIndex; }
 		set { SpriteIndexChange(value); }
@@ -52,6 +53,8 @@ public class Player : MonoBehaviour
 
 	public float hangTime = 0.2f;
 	float hangCounter;
+
+	bool scoreStarted;
 
 	public float verticalOffset {
 		get { return (platformGenerator == null) ? 2f : platformGenerator.VerticalOffset; }
@@ -137,7 +140,19 @@ public class Player : MonoBehaviour
 		controller.Move(velocity * Time.deltaTime);
 		checkOutofBounds();
 
-		score.travel(platformGenerator.platformSpeed * Time.deltaTime);
+		scoreTravel(platformGenerator.platformSpeed * Time.deltaTime);
+	}
+
+	void scoreTravel(float distance) {
+		if (scoreStarted) score.travel(distance);
+	}
+
+	void scoreJumpo() {
+		if (scoreStarted) score.jump();
+	}
+
+	void scoreColorChange() {
+		if (scoreStarted) score.change();
 	}
 
 	private void OnDrawGizmos() {
@@ -151,6 +166,8 @@ public class Player : MonoBehaviour
 
 	public void Reset() {
 		velocity = new Vector3();
+		scoreStarted = false;
+		isAlive = true;
 	}
 
 	void onJump(float velocity_Y, bool keyUp) {
@@ -161,8 +178,30 @@ public class Player : MonoBehaviour
 		PlayerTrail playerTrail = trail.GetComponent<PlayerTrail>();
 		playerTrail.player = this;
 
-		score.jump();
+		scoreJumpo();
 	}
+
+	void onColorChange(Collider2D other) {
+		ColorChanger colorChanger = other.gameObject.GetComponent<ColorChanger>();
+		colorChanger.setPlatformGenerator(platformGenerator);
+		colorChanger.change();
+		colorChanger.trigger();
+		scoreColorChange();
+	}
+
+	void onScoreStarted(Collider2D other) {
+		Debug.Log("Score Started");
+		scoreStarted = true;
+
+		other.enabled = false;
+	}
+
+	void onHighScorePassed(Collider2D other) {
+		Debug.Log("HighScore Passed");
+
+		other.enabled = false;
+	}
+
 
 	void checkOutofBounds() {
 		if (isOutOfBoundsBottom()) onOutOfBounds(true);
@@ -211,14 +250,11 @@ public class Player : MonoBehaviour
 	}
 
 	public void onTrigger(Collider2D other) {
-		if (other.gameObject.tag == "ColorChanger") {
-			ColorChanger colorChanger = other.gameObject.GetComponent<ColorChanger>();
-			colorChanger.setPlatformGenerator(platformGenerator);
-			colorChanger.change();
-			colorChanger.trigger();
-			score.change();
-		}
+		if (other.gameObject.tag == "ColorChanger") onColorChange(other);
+		else if (other.gameObject.tag == "StartFlag") onScoreStarted(other);
+		else if (other.gameObject.tag == "HighScoreFlag") onHighScorePassed(other);
 	}
+
 
 	void SpriteIndexChange(int index) {
 		if (index < 0) index = 0;

@@ -55,6 +55,13 @@ public abstract class PlatformGenerator : MonoBehaviour
 	bool finishedGenerating = false;
 	float time;
 
+
+	public GameObject StartFlagPrefab;
+	public float StartFlagEdgeOffset = 1f;
+	public Vector2 FlagSize;
+	public GameObject HighScoreFlagPrefab;
+	protected bool HighScoreFlagSpawned = false;
+
 	public Type type { get; protected set; }
 
 	[HideInInspector]
@@ -80,9 +87,6 @@ public abstract class PlatformGenerator : MonoBehaviour
 	void Start() {
 		type = Type.none;
 		transform.position = RightOfScreen;
-
-		Debug.Log("Start: " + RightOfScreen);
-
 		init();
 	}
 
@@ -120,6 +124,10 @@ public abstract class PlatformGenerator : MonoBehaviour
 		if (colInd == -1) changeBackgroundColor(randomColorIndex());
 		else changeBackgroundColor(colInd);
 
+
+		HighScoreFlagSpawned = (ScoreManager.Instance.highScore.distance - ScoreManager.MinDistance <= 1f);
+		//Debug.Log(HighScoreFlagSpawned + " :HighDist: " + ScoreManager.Instance.highScore.distance);
+
 		if (platforms != null) {
 			Platform[] plats = platforms.ToArray<Platform>();
 			for (int i = 0; i < plats.Length; ++i) if (plats[i] != null) plats[i].Die();
@@ -138,7 +146,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 		restartGeneration(BackgroundColorIndex);
 	}
 
-	void CreatePlatform(Vector3 pos, float width, bool initial, bool changer, int ColorIndex) {
+	void CreatePlatform(Vector3 pos, float width, bool initial, bool changer, bool isHighScore, int ColorIndex) {
 		GameObject plat = Instantiate(PlatformPrefab, pos, Quaternion.identity);
 		Platform platform = plat.GetComponent<Platform>();
 		platform.platformGenerator = this;
@@ -161,8 +169,11 @@ public abstract class PlatformGenerator : MonoBehaviour
 			colorChangers.Add(ColChang);
 		}
 
+		if (initial) CreateStartFlag(platform, width, blockHeight);
+		else if (isHighScore) CreateHighScoreFlag(platform, width, blockHeight);
+
 	}
-	protected void CreatePlatform(Vector3 topLeft, bool spawnChanger = true) {
+	protected void CreatePlatform(Vector3 topLeft, bool canSpawnColorChanger = true) {
 		int heightIndex = getHeightIndex(topLeft.y);
 		int maxJumpHeightIndex = Mathf.FloorToInt(player.maxJumpHeight / blockHeight) - 1;
 		int colorIndex = randomColorIndexPattern();
@@ -181,8 +192,27 @@ public abstract class PlatformGenerator : MonoBehaviour
 			}
 		} else if (colorIndex != BackgroundColorIndex) previousPlatformHeightIndex = heightIndex;
 
-		bool chagner = spawnChanger && (colorIndex != BackgroundColorIndex) && (Random.value <= ColorChangerChance);
-		CreatePlatform(new Vector3(topLeft.x + blockWidth / 2, topLeft.y - blockHeight / 2), blockWidth, false, chagner, colorIndex);
+		bool isHighScore = false;
+		if (!HighScoreFlagSpawned) {
+
+			float currentDist = player.score.distance;
+			float highScoreDist = 50f;// ScoreManager.Instance.highScore.distance;
+
+			float playerDist = Mathf.Abs(transform.position.x - player.transform.position.x);
+			float delta_Dist = Mathf.Abs(highScoreDist - currentDist);
+			float alpha_dist = blockWidth;
+
+			isHighScore = Mathf.Abs(playerDist - delta_Dist) <= alpha_dist;
+
+			if (colorIndex == BackgroundColorIndex) colorIndex = randomColorIndexNot();
+			if (isHighScore) HighScoreFlagSpawned = true;
+		}
+
+
+		bool changer = canSpawnColorChanger && !isHighScore && (colorIndex != BackgroundColorIndex) && (Random.value <= ColorChangerChance);
+
+		CreatePlatform(new Vector3(topLeft.x + blockWidth / 2, topLeft.y - blockHeight / 2), blockWidth, false, changer, isHighScore, colorIndex);
+
 	}
 	void CreateInitialPlatform() {
 		float midHeight = getMiddleHeight();
@@ -190,11 +220,28 @@ public abstract class PlatformGenerator : MonoBehaviour
 		colorPatternCount = 1;
 
 		float wid = CameraWidth + HorizontalOffest * 2;
+		Vector3 pos = new Vector3(0, midHeight - blockHeight / 2);
 
-
-
-		CreatePlatform(new Vector3(0, midHeight - blockHeight / 2), wid, true, false, randomColorIndexNot()); ;
+		CreatePlatform(pos, wid, true, false, false, randomColorIndexNot());
 	}
+
+	void CreateStartFlag(Platform initPlatform, float initPlatformWidth, float initPlatformHeight) {
+		Vector3 positionOffset = new Vector3(initPlatformWidth / 2, initPlatformHeight / 2) + new Vector3(-StartFlagEdgeOffset, 0f);
+		CreateFlag(StartFlagPrefab, initPlatform, positionOffset, true);
+	}
+
+	void CreateHighScoreFlag(Platform platform, float platformWidth, float platformHeight) {
+		Vector3 positionOffset = new Vector3(0f, platformHeight / 2);
+		CreateFlag(HighScoreFlagPrefab, platform, positionOffset, false);
+	}
+
+	void CreateFlag(GameObject flagPrefab, Platform platform, Vector3 positionOffset, bool start = false) {
+		GameObject flagStart = Instantiate(flagPrefab, platform.transform);
+
+		flagStart.transform.localScale = FlagSize;
+		flagStart.transform.localPosition = positionOffset;
+	}
+
 
 	public void changeBackgroundColor(int colIndex) {
 		if (colIndex < 0 || colIndex >= colors.Length) {

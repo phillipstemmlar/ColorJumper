@@ -8,6 +8,7 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 	public float DoublePlatformChance = 0.5f;
 	public float DoublePlatformOpenPercentage = 0.7f;
 	int debugCounter = 0;
+
 	protected override void init() {
 		type = Type.unlimited;
 	}
@@ -20,6 +21,9 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 	}
 
 	protected override void generateNextPlatform() {
+
+		//TODO: Check if next platform is Highscore: isHighScore
+
 
 		float H = randomHeight();
 		CreatePlatform(transform.position + Vector3.up * H);

@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
 	public GameObject UnlimitedPlatformGeneratorPrefab;
 	public GameObject PlayerPrefab;
 
+	public bool ResetPlayerData = false;
+
 	[HideInInspector] public bool isPaused;
 
 	[HideInInspector] public PlatformGenerator platformGenerator;
@@ -97,12 +99,15 @@ public class GameManager : MonoBehaviour
 
 
 	public void PlayerDied(bool bottom) {
-		PauseLevel();
-		player.score.finalize();
-		EndlessLevelScene.Instance.PlayerDied();
-		SaveGameData();
-		platformGenerator.onPlayerOutOfBounds(bottom);
-		if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.showDeathScreen();
+		if (player.isAlive) {
+			player.isAlive = false;
+			PauseLevel();
+			player.score.finalize();
+			EndlessLevelScene.Instance.PlayerDied();
+			SaveGameData();
+			platformGenerator.onPlayerOutOfBounds(bottom);
+			if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.showDeathScreen();
+		}
 	}
 
 	public void PauseLevel() {
@@ -111,6 +116,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	public void ResumeLevel() {
+		player.Reset();
 		isPaused = false;
 		Time.timeScale = 1;
 	}

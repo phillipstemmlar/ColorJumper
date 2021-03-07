@@ -18,6 +18,10 @@ public class SaveManager : MonoBehaviour
 		}
 	}
 
+	void Start() {
+		if (GameManager.Instance.ResetPlayerData) ResetData();
+	}
+
 	public void Save() {
 		Debug.Log(SaveHelper.Serialize<SaveState>(state));
 		PlayerPrefs.SetString("save", SaveHelper.Serialize<SaveState>(state));
@@ -30,6 +34,11 @@ public class SaveManager : MonoBehaviour
 			Save();
 		}
 		Debug.Log(SaveHelper.Serialize<SaveState>(state));
+	}
+
+	public void ResetData() {
+		if (PlayerPrefs.HasKey("save")) PlayerPrefs.DeleteKey("save");
+
 	}
 
 

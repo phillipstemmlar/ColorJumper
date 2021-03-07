@@ -66,6 +66,12 @@ MonoBehaviour:
   scaleMultiplier: 1
   intervalDistance: 0
   platformSpeed: 7
+  StartFlagPrefab: {fileID: 5855894236770357022, guid: f445c905dbda934418d9dad2c69fa255,
+    type: 3}
+  StartFlagEdgeOffset: 1
+  FlagSize: {x: 0.2, y: 4}
+  HighScoreFlagPrefab: {fileID: 8652565429844563065, guid: 429d1bb5eef4cd14d93ea4f511641aeb,
+    type: 3}
   platformIndex: 0
   BackgroundColorIndex: 0
   colorPatternMax: 1

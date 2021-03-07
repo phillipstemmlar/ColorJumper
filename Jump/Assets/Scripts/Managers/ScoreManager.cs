@@ -6,6 +6,8 @@ public class ScoreManager : MonoBehaviour
 {
 	public static ScoreManager Instance = null;
 
+	public const float MinDistance = 0f;
+
 	[HideInInspector] public Player player;
 
 	public Score playerScore;
