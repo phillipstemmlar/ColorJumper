@@ -19,7 +19,7 @@ public class SaveManager : MonoBehaviour
 	}
 
 	void Start() {
-		if (GameManager.Instance.ResetPlayerData) ResetData();
+
 	}
 
 	public void Save() {

@@ -10,8 +10,6 @@ public class GameManager : MonoBehaviour
 	public GameObject UnlimitedPlatformGeneratorPrefab;
 	public GameObject PlayerPrefab;
 
-	public bool ResetPlayerData = false;
-
 	[HideInInspector] public bool isPaused;
 
 	[HideInInspector] public PlatformGenerator platformGenerator;
@@ -144,6 +142,7 @@ public class GameManager : MonoBehaviour
 		//Debug.Log("Loading MainMenu");
 		SceneManager.LoadScene(sceneName: "MainMenu");
 		//Debug.Log("Loading MainMenu - done");
+		if (MainMenuScene.Instance != null) MainMenuScene.Instance.initAll();
 	}
 
 	void SaveGameData() {
@@ -159,6 +158,12 @@ public class GameManager : MonoBehaviour
 		PlayerSpriteIndex = SaveManager.Instance.state.PlayerSpriteIndex;
 		ColorPaletteIndex = SaveManager.Instance.state.ColorPaletteIndex;
 
-		if (MainMenuScene.Instance != null) MainMenuScene.Instance.inintPlayerModel();
+		if (MainMenuScene.Instance != null) MainMenuScene.Instance.initAll();
 	}
+
+	public void ResetPlayerData() {
+		SaveManager.Instance.ResetData();
+		LoadGameData();
+	}
+
 }

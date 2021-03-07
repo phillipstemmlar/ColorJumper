@@ -196,7 +196,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 		if (!HighScoreFlagSpawned) {
 
 			float currentDist = player.score.distance;
-			float highScoreDist = 50f;// ScoreManager.Instance.highScore.distance;
+			float highScoreDist = ScoreManager.Instance.highScore.distance;
 
 			float playerDist = Mathf.Abs(transform.position.x - player.transform.position.x);
 			float delta_Dist = Mathf.Abs(highScoreDist - currentDist);
