@@ -8,7 +8,7 @@ public class MainMenuScene : MonoBehaviour
 {
 	public static MainMenuScene Instance = null;
 
-	public Text highScoreText;
+	public Text TotalText;
 	public Button btnStart;
 	public Button btnCharacter;
 	public Button btnColorPalette;
@@ -45,7 +45,7 @@ public class MainMenuScene : MonoBehaviour
 	}
 
 	public void initScore() {
-		if (ScoreManager.Instance != null) highScoreText.text = "High Score:\n" + ScoreManager.Instance.highScore.ToString();
+		if (ScoreManager.Instance != null) TotalText.text = ScoreManager.Instance.highScore.totalScore.ToString();
 	}
 
 	public void inintPlayerModel() {

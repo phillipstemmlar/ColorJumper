@@ -13,7 +13,7 @@ public class EndlessLevelScene : MonoBehaviour
 	public GameObject pnlDeathScreen;
 	Text btnPauseText;
 
-	public Text textBoxScore, textBoxHighScore, textBoxScorePanel, textBoxHighScorePanel;
+	public Text textBoxScore, textBoxHighScore, ScoreText, OldTotalText, addTotalText, HighSoreText;
 
 	public Vector3 playerScoreOffset;
 	public Vector3 highscoreTextOffset;
@@ -22,6 +22,7 @@ public class EndlessLevelScene : MonoBehaviour
 	Player player = null;
 	Transform HighScoreFlagTransform = null;
 
+	const string plus_sign = "+";
 
 	private void Awake() {
 		Instance = this;
@@ -69,8 +70,8 @@ public class EndlessLevelScene : MonoBehaviour
 		textBoxScore.transform.parent.gameObject.SetActive(true);
 		btnPause.gameObject.SetActive(true);
 
-		textBoxScorePanel.text = "";
-		textBoxHighScorePanel.text = "";
+		ScoreText.text = "";
+		OldTotalText.text = "";
 		hideDeathScreen();
 		HighScoreFlagTransform = null;
 		textBoxHighScore.gameObject.SetActive(false);
@@ -80,8 +81,9 @@ public class EndlessLevelScene : MonoBehaviour
 		textBoxScore.transform.parent.gameObject.SetActive(false);
 		btnPause.gameObject.SetActive(false);
 
-		textBoxHighScorePanel.text = "High Score:\n" + ScoreManager.Instance.highScore.ToString();
-		textBoxScorePanel.text = "Player Score:\n" + ScoreManager.Instance.playerScore.ToString();
+		OldTotalText.text = ScoreManager.Instance.playerScore.totalScore.ToString();
+		ScoreText.text = Mathf.RoundToInt(ScoreManager.Instance.playerScore.distance).ToString();
+		addTotalText.text = plus_sign + Mathf.RoundToInt(ScoreManager.Instance.playerScore.distance).ToString();
 	}
 
 	void onPauseClicked() {

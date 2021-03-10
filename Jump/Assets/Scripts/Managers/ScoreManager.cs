@@ -29,9 +29,12 @@ public class ScoreManager : MonoBehaviour
 	public void init(Player _player, Score oldScore = null) {
 		player = _player;
 
+		Debug.Log("init score");
 
 		if (oldScore == null) playerScore = new Score(player, this);
 		else playerScore = new Score(oldScore);
+
+		playerScore.totalScore = highScore.totalScore;
 	}
 
 	void Update() {
@@ -55,7 +58,7 @@ public class ScoreManager : MonoBehaviour
 		highScore.loadState(state);
 
 
-		//Debug.Log("SCM - high");
+		Debug.Log("SCM - high");
 		Debug.Log(highScore.ToString());
 		//Debug.Log("SCM done");
 	}
@@ -64,6 +67,7 @@ public class ScoreManager : MonoBehaviour
 	{
 		Player player;
 		public float distance { get; protected set; }
+		public int totalScore { get; set; }
 		public int jumps { get; protected set; }
 		public int colorChagnes { get; protected set; }
 		bool isFinal;
@@ -79,6 +83,7 @@ public class ScoreManager : MonoBehaviour
 			distance = 0;
 			jumps = 0;
 			colorChagnes = 0;
+			totalScore = 0;
 		}
 
 		public Score(Score copy) {
@@ -112,6 +117,7 @@ public class ScoreManager : MonoBehaviour
 			state.distance = distance;
 			state.jumps = jumps;
 			state.colorChagnes = colorChagnes;
+			state.totalScore = totalScore;
 			return state;
 		}
 
@@ -125,6 +131,10 @@ public class ScoreManager : MonoBehaviour
 		public HighScore() : base(null, null) { }
 
 		public void CheckScore(Score score) {
+
+			score.totalScore = totalScore;
+			totalScore += Mathf.RoundToInt(score.distance);
+
 			if (score.jumps > jumps) jumps = score.jumps;
 			if (score.colorChagnes > colorChagnes) colorChagnes = score.colorChagnes;
 			if (score.distance > distance) distance = score.distance;
@@ -133,6 +143,7 @@ public class ScoreManager : MonoBehaviour
 			distance = state.distance;
 			jumps = state.jumps;
 			colorChagnes = state.colorChagnes;
+			totalScore = state.totalScore;
 		}
 	}
 
