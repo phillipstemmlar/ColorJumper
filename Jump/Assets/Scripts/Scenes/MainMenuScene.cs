@@ -56,7 +56,7 @@ public class MainMenuScene : MonoBehaviour
 		Vector3 pos = Camera.main.ScreenToWorldPoint(btnStart.transform.position);
 		pos.z = 0;
 
-		playerSprite = Instantiate(SpriteModelManager.Instance.getPlayerModelPrefab(), pos, Quaternion.identity);
+		playerSprite = Instantiate(SpriteModelManager.Instance.getActivePlayerModelPrefab(), pos, Quaternion.identity);
 		playerSprite.transform.localScale = new Vector3(7f, 7f, 1f);
 
 	}

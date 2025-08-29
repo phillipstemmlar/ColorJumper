@@ -176,7 +176,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 	protected void CreatePlatform(Vector3 topLeft, bool canSpawnColorChanger = true) {
 		int heightIndex = getHeightIndex(topLeft.y);
 		int maxJumpHeightIndex = Mathf.FloorToInt(player.maxJumpHeight / blockHeight) - 1;
-		int colorIndex = randomColorIndexPattern();
+		int colorIndex = nextColorIndex();
 
 		if (heightIndex - previousPlatformHeightIndex > maxJumpHeightIndex) {
 			if (colorIndex == BackgroundColorIndex) {
@@ -241,7 +241,8 @@ public abstract class PlatformGenerator : MonoBehaviour
 		flagStart.transform.localScale = FlagSize;
 		flagStart.transform.localPosition = positionOffset;
 
-		if (!start) EndlessLevelScene.Instance.onHighScoreText(flagStart.transform);
+		if (!start && EndlessLevelScene.Instance != null)
+			EndlessLevelScene.Instance.onHighScoreText(flagStart.transform);
 	}
 
 
@@ -291,6 +292,9 @@ public abstract class PlatformGenerator : MonoBehaviour
 		return index;
 	}
 
+	public virtual int nextColorIndex() {
+		return randomColorIndexPattern();
+	}
 
 	public int randomColorIndexPattern() {
 		int index;
@@ -352,7 +356,7 @@ public abstract class PlatformGenerator : MonoBehaviour
 
 	public enum Type
 	{
-		none, unlimited, indexed, count, custom
+		none, flat, unlimited, indexed, count, custom
 	};
 
 	public struct Rect

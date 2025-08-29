@@ -1488,7 +1488,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 881.13214, y: 465.3293}
+  m_AnchoredPosition: {x: 881, y: 465}
   m_SizeDelta: {x: -1762.268, y: -930.6652}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1638079540
@@ -2299,6 +2299,12 @@ PrefabInstance:
       propertyPath: ResetPlayerData
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6605475686747138692, guid: d317715db81c3054d8b8ebbd0745d119,
+        type: 3}
+      propertyPath: FlatPlatformGeneratorPrefab
+      value: 
+      objectReference: {fileID: 7916816058793041874, guid: 483684a526c2c9447bf40f0f61ff0575,
+        type: 3}
     - target: {fileID: 6605475686747138694, guid: d317715db81c3054d8b8ebbd0745d119,
         type: 3}
       propertyPath: m_Name

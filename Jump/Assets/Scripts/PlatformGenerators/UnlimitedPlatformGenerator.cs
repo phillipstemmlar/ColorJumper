@@ -53,7 +53,7 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 		//cols.Add(decCol(246, 213, 92));       //  #f6d55c	rgb(246, 213, 92)
 		//return cols.ToArray();                   //	 #173f5f	rgb(23, 63, 95)
 
-		GameObject go = SpriteModelManager.Instance.getColorPalettePrefab();
+		GameObject go = SpriteModelManager.Instance.getActiveColorPalettePrefab();
 		ColorPalette palette = go.GetComponent<ColorPalette>();
 
 		Color[] colors = new Color[5];
@@ -80,7 +80,7 @@ public class UnlimitedPlatformGenerator : PlatformGenerator
 
 	float randomHeight() {
 		return getHeight(Random.Range(0, platformHeightsCount));
-
+		//return getMiddleHeight() - blockHeight / 2;
 	}
 
 }

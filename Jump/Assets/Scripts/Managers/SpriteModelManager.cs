@@ -21,12 +21,20 @@ public class SpriteModelManager : MonoBehaviour
 		}
 	}
 
-	public GameObject getPlayerModelPrefab() {
-		return PlayerModelPrefabs[GameManager.Instance.PlayerSpriteIndex];
+	public GameObject getPlayerModelPrefab(int spriteIndex) {
+		return PlayerModelPrefabs[spriteIndex];
 	}
 
-	public GameObject getColorPalettePrefab() {
-		return ColorPalettePrefabs[GameManager.Instance.ColorPaletteIndex];
+	public GameObject getActivePlayerModelPrefab() {
+		return getPlayerModelPrefab(GameManager.Instance.PlayerSpriteIndex);
+	}
+
+	public GameObject getColorPalettePrefab(int paletteIndex) {
+		return ColorPalettePrefabs[paletteIndex];
+	}
+
+	public GameObject getActiveColorPalettePrefab() {
+		return getColorPalettePrefab(GameManager.Instance.ColorPaletteIndex);
 	}
 
 }

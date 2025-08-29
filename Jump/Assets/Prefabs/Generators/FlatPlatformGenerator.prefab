@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7916816058793041874
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 844202146034211055}
+  - component: {fileID: 3240457941537944546}
+  m_Layer: 0
+  m_Name: FlatPlatformGenerator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &844202146034211055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916816058793041874}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.636147, y: 0.16668984, z: -96.84124}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3240457941537944546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7916816058793041874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3aff5fcb16f11744fbddab447697fc44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  PlayerPosition: {x: -7, y: 3}
+  PlatformPrefab: {fileID: 493156240466661993, guid: 34f5b9c64a75f724f9148e6106bf4d81,
+    type: 3}
+  ColorChangerPrefab: {fileID: 1228428001263077140, guid: f6f3a56aa18c30748983367bfd5aeb9c,
+    type: 3}
+  colors: []
+  alphaNotSelected: 1
+  alphaSelected: 0.01
+  additionalSpawnChange: 0.5
+  isDrawingScreenBorder: 1
+  isDrawingPlatformRect: 1
+  CameraHeight: 0
+  CameraWidth: 0
+  ColorChangerChance: 0
+  ColorChangerOffset: 1
+  HorizontalOffest: 1
+  VerticalOffset: 2
+  blockWidth: 3
+  blockHeight: 1
+  scaleMultiplier: 1
+  intervalDistance: 0
+  platformSpeed: 7
+  StartFlagPrefab: {fileID: 5855894236770357022, guid: f445c905dbda934418d9dad2c69fa255,
+    type: 3}
+  StartFlagEdgeOffset: 1
+  FlagSize: {x: 0.2, y: 4}
+  HighScoreFlagPrefab: {fileID: 8652565429844563065, guid: 429d1bb5eef4cd14d93ea4f511641aeb,
+    type: 3}
+  platformIndex: 0
+  BackgroundColorIndex: 0
+  colorPatternMax: 1

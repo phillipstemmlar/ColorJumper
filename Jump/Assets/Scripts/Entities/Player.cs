@@ -5,6 +5,7 @@ using UnityEngine;
 // ?
 
 [RequireComponent(typeof(PlayerController2D))]
+[RequireComponent(typeof(PlayerAnimator))]
 public class Player : MonoBehaviour
 {
 
@@ -12,7 +13,15 @@ public class Player : MonoBehaviour
 	public GameObject PlayerTrailPrefab;
 	public Vector2 trailSpawnPoint;
 
-	public float moveSpeed = 6;
+	const float defaultMoveSpeed = 6f;
+	public float moveSpeed = 0f;
+
+	public float MoveSpeed
+	{
+		get { return moveSpeed; }
+		set { moveSpeed = value; }
+	}
+
 	public float maxJumpHeight = 4;
 	public float minJumpHeight = 1;
 	public float timeToJumpApex = 0.4f;
@@ -26,7 +35,8 @@ public class Player : MonoBehaviour
 	float gravity;
 
 	public bool isAlive { get; set; }
-	public int SpriteIndex {
+	public int SpriteIndex
+	{
 		get { return SpriteModelIndex; }
 		set { SpriteIndexChange(value); }
 	}
@@ -40,6 +50,7 @@ public class Player : MonoBehaviour
 
 	PlatformGenerator platformGenerator = null;
 	SpriteRenderer spriteRenderer;
+	PlayerAnimator playerAnimator;
 	GameObject playerSprite = null;
 
 	[HideInInspector] public GameManager manager;
@@ -56,12 +67,14 @@ public class Player : MonoBehaviour
 
 	bool scoreStarted;
 
-	public float verticalOffset {
+	public float verticalOffset
+	{
 		get { return (platformGenerator == null) ? 2f : platformGenerator.VerticalOffset; }
 		set { if (platformGenerator != null) platformGenerator.VerticalOffset = value; }
 	}
 
-	private void Awake() {
+	private void Awake()
+	{
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		controller = GetComponent<PlayerController2D>();
 		controller.collider = GetComponent<BoxCollider2D>();
@@ -69,12 +82,14 @@ public class Player : MonoBehaviour
 		SpriteIndexChange(DefaultSpriteIndex);
 	}
 
-	void Start() {
+	void Start()
+	{
 		calculatePhysicsValues();
 		Reset();
 	}
 
-	void Update() {
+	void Update()
+	{
 		willBeJumping = false;
 		jumpKeyUp = false;
 
@@ -89,21 +104,25 @@ public class Player : MonoBehaviour
 		else hangCounter -= Time.deltaTime;
 
 		//Touch Controls
-		if (Input.touchCount > 0) {
-			if (Input.touches[0].phase == TouchPhase.Began && controller.collisions.below) {
+		if (Input.touchCount > 0)
+		{
+			if (Input.touches[0].phase == TouchPhase.Began && controller.collisions.below)
+			{
 				Debug.Log("Touch Pressed");
 				velocity.y = maxJumpVelocity;
 				willBeJumping = true;
 			}
 
-			if (Input.touches[0].phase == TouchPhase.Began && hangCounter > 0) {
+			if (Input.touches[0].phase == TouchPhase.Began && hangCounter > 0)
+			{
 				Debug.Log("Touch Pressed");
 				hangCounter = -1f;
 				velocity.y = maxJumpVelocity;
 				willBeJumping = true;
 			}
 
-			if (Input.touches[0].phase == TouchPhase.Ended && velocity.y > minJumpVelocity) {
+			if (Input.touches[0].phase == TouchPhase.Ended && velocity.y > minJumpVelocity)
+			{
 				Debug.Log("Touch Lifted/Released");
 				velocity.y = minJumpVelocity;
 				willBeJumping = true;
@@ -112,17 +131,20 @@ public class Player : MonoBehaviour
 		}
 
 		//Keyboard controls
-		if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below) {
+		if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below)
+		{
 			velocity.y = maxJumpVelocity;
 			willBeJumping = true;
 		}
 
-		if (Input.GetKeyDown(KeyCode.Space) && hangCounter > 0) {
+		if (Input.GetKeyDown(KeyCode.Space) && hangCounter > 0)
+		{
 			hangCounter = -1f;
 			velocity.y = maxJumpVelocity;
 			willBeJumping = true;
 		}
-		if (Input.GetKeyUp(KeyCode.Space) && velocity.y > minJumpVelocity) {
+		if (Input.GetKeyUp(KeyCode.Space) && velocity.y > minJumpVelocity)
+		{
 			velocity.y = minJumpVelocity;
 			willBeJumping = true;
 			jumpKeyUp = true;
@@ -141,21 +163,29 @@ public class Player : MonoBehaviour
 		checkOutofBounds();
 
 		scoreTravel(platformGenerator.platformSpeed * Time.deltaTime);
+
+		playerAnimator.SetVerticalVelocity(velocity.y);
+		playerAnimator.SetHorizontalVelocity(moveSpeed / defaultMoveSpeed);
+		playerAnimator.SetRunning(true);
 	}
 
-	void scoreTravel(float distance) {
-		if (scoreStarted) score.travel(distance);
+	void scoreTravel(float distance)
+	{
+		if (scoreStarted && score != null) score.travel(distance);
 	}
 
-	void scoreJumpo() {
+	void scoreJumpo()
+	{
 		if (scoreStarted) score.jump();
 	}
 
-	void scoreColorChange() {
+	void scoreColorChange()
+	{
 		if (scoreStarted) score.change();
 	}
 
-	private void OnDrawGizmos() {
+	private void OnDrawGizmos()
+	{
 		float Width = 0.55f;
 		float Height = 0.9f;
 		Vector3 offset = new Vector3(0.01f, 0.02f, 0f);
@@ -164,13 +194,17 @@ public class Player : MonoBehaviour
 		rect.draw(Color.yellow);
 	}
 
-	public void Reset() {
+	public void Reset()
+	{
+		moveSpeed = defaultMoveSpeed;
 		velocity = new Vector3();
 		scoreStarted = false;
 		isAlive = true;
+		playerAnimator.SetRunning(true);
 	}
 
-	void onJump(float velocity_Y, bool keyUp) {
+	void onJump(float velocity_Y, bool keyUp)
+	{
 		GameObject trail = Instantiate(PlayerTrailPrefab, new Vector3(), Quaternion.identity);
 		trail.transform.parent = transform;
 		trail.transform.localPosition = trailSpawnPoint;
@@ -181,7 +215,8 @@ public class Player : MonoBehaviour
 		scoreJumpo();
 	}
 
-	void onColorChange(Collider2D other) {
+	void onColorChange(Collider2D other)
+	{
 		ColorChanger colorChanger = other.gameObject.GetComponent<ColorChanger>();
 		colorChanger.setPlatformGenerator(platformGenerator);
 		colorChanger.change();
@@ -189,14 +224,16 @@ public class Player : MonoBehaviour
 		scoreColorChange();
 	}
 
-	void onScoreStarted(Collider2D other) {
+	void onScoreStarted(Collider2D other)
+	{
 		Debug.Log("Score Started");
 		scoreStarted = true;
 
 		other.enabled = false;
 	}
 
-	void onHighScorePassed(Collider2D other) {
+	void onHighScorePassed(Collider2D other)
+	{
 		Debug.Log("HighScore Passed");
 
 		other.enabled = false;
@@ -204,7 +241,8 @@ public class Player : MonoBehaviour
 	}
 
 
-	void checkOutofBounds() {
+	void checkOutofBounds()
+	{
 		if (isOutOfBoundsBottom()) onOutOfBounds(true);
 		else if (isOutOfBoundsTop()) onOutOfBounds(false);
 	}
@@ -213,51 +251,60 @@ public class Player : MonoBehaviour
 	bool isOutOfBoundsTop() => false && (transform.position.y > platformGenerator.CameraHeight / 2 + verticalOffset);
 
 
-	void onOutOfBounds(bool bottom) {
+	void onOutOfBounds(bool bottom)
+	{
 		manager.PlayerDied(bottom);
 	}
 
-	public void setX(float x) {
+	public void setX(float x)
+	{
 		Vector3 pos = transform.position;
 		pos.x = x;
 		transform.position = pos;
 	}
-	public void setY(float y) {
+	public void setY(float y)
+	{
 		Vector3 pos = transform.position;
 		pos.y = y;
 		transform.position = pos;
 	}
-	public void setXY(float x, float y) {
+	public void setXY(float x, float y)
+	{
 		Vector3 pos = transform.position;
 		pos.x = x;
 		pos.y = y;
 		transform.position = pos;
 	}
-	public void setXY(Vector2 newPos) {
+	public void setXY(Vector2 newPos)
+	{
 		Vector3 pos = transform.position;
 		pos.x = newPos.x;
 		pos.y = newPos.y;
 		transform.position = pos;
 	}
 
-	void calculatePhysicsValues() {
+	void calculatePhysicsValues()
+	{
 		gravity = -(2 * maxJumpHeight) / Mathf.Pow(timeToJumpApex, 2);
 		maxJumpVelocity = Mathf.Abs(gravity) * timeToJumpApex;
 		minJumpVelocity = Mathf.Sqrt(2 * Mathf.Abs(gravity) * minJumpHeight);
 	}
-	public void setPlatformGenerator(PlatformGenerator platgen) {
+	public void setPlatformGenerator(PlatformGenerator platgen)
+	{
 		//print("plat.type: " + platgen.type);
 		platformGenerator = platgen;
 	}
 
-	public void onTrigger(Collider2D other) {
+	public void onTrigger(Collider2D other)
+	{
 		if (other.gameObject.tag == "ColorChanger") onColorChange(other);
 		else if (other.gameObject.tag == "StartFlag") onScoreStarted(other);
 		else if (other.gameObject.tag == "HighScoreFlag") onHighScorePassed(other);
 	}
 
 
-	void SpriteIndexChange(int index) {
+	void SpriteIndexChange(int index)
+	{
 		if (index < 0) index = 0;
 		if (index >= SpriteModelManager.Instance.PlayerModelPrefabs.Length) index = SpriteModelManager.Instance.PlayerModelPrefabs.Length - 1;
 
@@ -265,14 +312,25 @@ public class Player : MonoBehaviour
 		PlayerSpritePrefab = SpriteModelManager.Instance.PlayerModelPrefabs[SpriteModelIndex];
 
 		initSpriteModel();
+
 	}
 
-	void initSpriteModel() {
+	void initSpriteModel()
+	{
 		if (playerSprite != null) Destroy(playerSprite);
 
 		playerSprite = Instantiate(PlayerSpritePrefab, transform.position, Quaternion.identity);
 		playerSprite.transform.parent = transform;
 		//playerSprite.transform.localPosition = new Vector3();
+
+		initPlayerAnimator();
+	}
+
+	void initPlayerAnimator()
+	{
+		playerAnimator = GetComponent<PlayerAnimator>();
+		playerAnimator.init();
+
 	}
 
 }

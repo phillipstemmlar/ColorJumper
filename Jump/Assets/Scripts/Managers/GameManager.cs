@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance = null;
 
 	public GameObject UnlimitedPlatformGeneratorPrefab;
+	public GameObject FlatPlatformGeneratorPrefab;
 	public GameObject PlayerPrefab;
 
 	[HideInInspector] public bool isPaused;
@@ -101,7 +102,7 @@ public class GameManager : MonoBehaviour
 			player.isAlive = false;
 			PauseLevel();
 			player.score.finalize();
-			EndlessLevelScene.Instance.PlayerDied();
+			if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.PlayerDied();
 			SaveGameData();
 			platformGenerator.onPlayerOutOfBounds(bottom);
 			if (EndlessLevelScene.Instance != null) EndlessLevelScene.Instance.showDeathScreen();
@@ -121,7 +122,8 @@ public class GameManager : MonoBehaviour
 
 	public void MainMenuStartClicked() {
 		//Debug.Log("Loading EndlessLevel");
-		SceneManager.LoadScene(sceneName: "EndlessLevel");
+		//SceneManager.LoadScene(sceneName: "EndlessLevel");
+		SceneManager.LoadScene(sceneName: "FlatLevel");
 		//Debug.Log("Loading EndlessLevel - done");
 		MainMenuScene.Instance.inintPlayerModel();
 	}
@@ -166,4 +168,36 @@ public class GameManager : MonoBehaviour
 		LoadGameData();
 	}
 
+
+	// ======================= Flat Level
+
+	public void StartFlatLevel() {
+		initPlayer();
+		initFlatPlatformGenerator();
+
+		ScoreManager.Instance.init(player);
+		SaveGameData();
+		LoadGameData();
+
+		if (FlatLevelScene.Instance != null) FlatLevelScene.Instance.hideDeathScreen();
+		RestartFlatLevel();
+	}
+
+	void initFlatPlatformGenerator() {
+		GameObject platformGen = Instantiate(FlatPlatformGeneratorPrefab, Vector3.zero, Quaternion.identity);
+		platformGenerator = platformGen.GetComponent<FlatPlatformGenerator>();
+		platformGenerator.player = player;
+	}
+	public void RestartFlatLevel() {
+		ResumeLevel();
+		if (FlatLevelScene.Instance != null) FlatLevelScene.Instance.init();
+		platformGenerator.restartGeneration();
+	}
+
+	public void ContinueFlatLevel() {
+		platformGenerator.continueGeneration();
+		ScoreManager.Instance.ContinueLevel();
+		ResumeLevel();
+		if (FlatLevelScene.Instance != null) FlatLevelScene.Instance.init();
+	}
 }

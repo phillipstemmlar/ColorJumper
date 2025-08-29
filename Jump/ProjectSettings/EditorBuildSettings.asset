@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/ColorPaletteMenu.unity
     guid: 317913c699576e94786655e0fc78857f
+  - enabled: 1
+    path: Assets/_Scenes/FlatLevel.unity
+    guid: fbac4bcebc6103f43ad6014489c19b8b
   m_configObjects: {}

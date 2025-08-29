@@ -45,8 +45,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnlimitedPlatformGeneratorPrefab: {fileID: 7574822204756385675, guid: 7a1bff793d265c742bc71c988d0c59ab,
     type: 3}
+  FlatPlatformGeneratorPrefab: {fileID: 7916816058793041874, guid: 483684a526c2c9447bf40f0f61ff0575,
+    type: 3}
   PlayerPrefab: {fileID: 3735709262039061538, guid: 6d717746f3e2b274cb03c22503c44dee,
     type: 3}
   isPaused: 0
   platformGenerator: {fileID: 0}
   player: {fileID: 0}
+  PlayerSpriteIndex: 0
+  ColorPaletteIndex: 0
